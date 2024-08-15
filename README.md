@@ -29,12 +29,11 @@ This project is an open-source proof of concept implementing a (Meme) Token Laun
 │       └── abi
 ├── components
 │   ├── tabs
-│   │   ├── EtchTab.tsx
 │   │   ├── index.tsx
 │   │   ├── LastEtchTab.tsx
 │   │   └── MintTab.tsx
 │   └── ui
-├── components.json
+├── components
 ├── constants
 │   └── index.ts
 ├── lib
@@ -49,8 +48,8 @@ To clone and run this project locally, follow these steps:
 1. **Clone the repository**:
 
    ```sh
-   git clone https://github.com/rsksmart/rsk-meme-token-launch.git
-   cd rsk-meme-token-launch
+   git clone https://github.com/rsksmart/meme-token-launch.git
+   cd meme-token-launch
    ```
 
 2. **Install dependencies**:

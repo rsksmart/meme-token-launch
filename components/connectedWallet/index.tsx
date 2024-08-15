@@ -7,7 +7,6 @@ import { useAuth } from '@/app/context/AuthContext'
 
 const ConnectedWallet: React.FC = () => {
     const { address } = useAuth()
-    console.log(address)
 
     return (
         <div className="">
