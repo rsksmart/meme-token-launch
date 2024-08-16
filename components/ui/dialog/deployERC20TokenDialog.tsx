@@ -1,38 +1,33 @@
-import React, { useEffect } from 'react'
-
+import React, { useEffect, useState } from 'react'
 import BaseDialog from '@/components/ui/dialog/baseDialog'
 import MetamaskIcon from '@/components/icons/Metamask'
 import useConnectWallet from '@/app/utils/hooks/useConnectWallet'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/app/context/AuthContext'
-import { ROUTER } from '@/constants'
+import { deployERC20, DeployERC20Props } from '@/app/utils/hooks/useDeployERC20Token'
 
 type props = {
   closeDialog: Function
   open: boolean
+  params: DeployERC20Props
 }
 
-function ConnectWalletDialog({ closeDialog, open }: props) {
-  const { login, provider, isError, setIsError } = useConnectWallet()
-  const { isLoggedIn,  login: authLogin  } = useAuth()
-
-  const router = useRouter()
+function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
+  const {isError, setIsError } = useConnectWallet()
+  const [isDeployed, setIsDeployed] = useState<boolean>(false)
 
   useEffect(() => {
     init()
-    if(isLoggedIn) {
-      authLogin(provider!)
-      router.push(ROUTER.TOKEN_LAUNCH)
+    if(isDeployed) {
       closeDialog()
       setIsError(false)
     }
-  }, [isLoggedIn, authLogin, router])
+  }, [isDeployed])
 
   const init = () => {
     setIsError(false)
     try {
-      setTimeout(() => {
-        login()
+      setTimeout(async () => {
+        const address = await deployERC20(params)
+        setIsDeployed(true)
       }, 1500)
     } catch (error: any) {
       setIsError(true)
@@ -49,7 +44,7 @@ function ConnectWalletDialog({ closeDialog, open }: props) {
       {!isError ? (
         <div>
           <h2 className="text-2xl text-slate-100 text-center font-semibold mb-10 mt-6">
-            Connecting wallet
+            Deploying contract
           </h2>
           <div className="relative flex justify-center items-center">
             <MetamaskIcon className="w-[100px] h-[100px] absolute" />
@@ -76,4 +71,4 @@ function ConnectWalletDialog({ closeDialog, open }: props) {
   )
 }
 
-export default ConnectWalletDialog
+export default DeployERC20TokenDialog

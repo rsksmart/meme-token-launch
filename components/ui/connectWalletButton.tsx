@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import ConnectWalletDialog from '@/components/ui/dialog/connectWalletDialog'
-import MetamaskIcon from '@/components/icons/MetamaskIcon'
+import Metamask from '@/components/icons/Metamask'
 import { Button } from '@/components/ui/button'
 
 const ConnectWalletButton: React.FC = () => {
@@ -22,7 +22,7 @@ const ConnectWalletButton: React.FC = () => {
         variant={'outline'}
         onClick={() => setDialog(true)}
       >
-        <MetamaskIcon className="w-5 mr-2" /> Connect wallet
+        <Metamask className="w-5 mr-2" /> Connect wallet
       </Button>
     </div>
   )
