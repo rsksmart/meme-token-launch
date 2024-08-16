@@ -106,7 +106,7 @@ const LaunchToken: React.FC = () => {
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         />
                     </div>
-                    <div className="my-6">
+                    <div className="mt-6">
                         <div className="flex-row flex gap-2 items-center">
                             <label htmlFor="price" className="">
                                 Description

@@ -28,9 +28,6 @@ export default function Home() {
           <h1 className="text-4xl text-white font-semibold mt-4 mb-2">
             Go to the app
           </h1>
-          <Card>
-            hola
-          </Card>
           <div className="flex items-center gap-4">
             <ConnectWalletButton />
           </div>
@@ -47,20 +44,20 @@ export default function Home() {
               </span>
             </div>
             <div className="mt-3 text-justify">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ac ipsum malesuada eros dictum volutpat eu ac risus. In mattis magna lacus, non aliquet leo sagittis quis. In tincidunt facilisis dolor a consequat. Proin eget semper magna, eget faucibus nibh.
+              Meme coins are designed like any other cryptocurrency, like Bitcoin or Ethereum. The difference is their existence tends to be centered around a viral moment or funny idea, and their value depends largely on how much momentum that concept can generate.
             </div>
           </div>
           <div className="flex-1 mt-4 border border-white rounded-3xl p-4">
             <div className="flex gap-2">
               <h3 className="bg-custom-pink w-max text-black text-3xl font-semibold px-2 py-1">
-                Token Launch
+                Token Launcher
               </h3>
               <span className="bg-custom-pink text-sm h-7 rounded-3xl w-7 flex justify-center items-center text-black font-semibold">
                 0.2
               </span>
             </div>
             <div className="mt-3 text-justify">
-              Quisque maximus eros a pulvinar rhoncus. Mauris pharetra risus at magna mollis, quis ultricies urna fermentum. Quisque sed dapibus eros, dictum interdum eros.
+              Token Launcher helps you launch Ethereum ERC20 Tokens on EVM-compatible blockchains, automatically list your token on major defi exchanges with a real trading price, airdrop to millions of addresses and create farming programs to incentive liquidity.
             </div>
           </div>
           <div className="flex-1 mt-4 border border-white rounded-3xl p-4">
@@ -75,7 +72,7 @@ export default function Home() {
             <div className="mt-3 text-justify">
               The{' '}
               <a
-                href="https://github.com/rsksmart/rsk-meme-token-launch"
+                href="https://github.com/rsksmart/meme-token-launch"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline font-semibold"

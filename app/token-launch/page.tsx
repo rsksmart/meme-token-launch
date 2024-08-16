@@ -40,7 +40,7 @@ export default function TokenLaunch() {
           }
         </div>
       </section>
-      <section className="w-full px-6 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto mt-4">
+      <section className="w-full px-2 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto mt-4">
         <LaunchToken />
       </section>
       <Footer />
