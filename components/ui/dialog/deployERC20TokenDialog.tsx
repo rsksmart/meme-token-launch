@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import BaseDialog from '@/components/ui/dialog/baseDialog'
 import MetamaskIcon from '@/components/icons/Metamask'
 import useConnectWallet from '@/app/utils/hooks/useConnectWallet'
-import { deployERC20, DeployERC20Props } from '@/app/utils/hooks/useDeployERC20Token'
+import useDeployERC20Token, { DeployERC20Props } from '@/app/utils/hooks/useDeployERC20Token'
 
 type props = {
   closeDialog: Function
@@ -11,7 +11,7 @@ type props = {
 }
 
 function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
-  const {isError, setIsError } = useConnectWallet()
+  const { deployERC20, isError, setIsError, address } = useDeployERC20Token();
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
 
   useEffect(() => {
@@ -25,8 +25,9 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
   const init = () => {
     setIsError(false)
     try {
-      setTimeout(async () => {
-        const address = await deployERC20(params)
+      setTimeout(() => {
+        deployERC20(params)
+        alert(address)
         setIsDeployed(true)
       }, 1500)
     } catch (error: any) {

@@ -5,11 +5,11 @@ import { useAuth } from '@/app/context/AuthContext'
 
 const useConnectWallet = () => {
   const { setAddress, setIsLoggedIn } = useAuth()
-  
+
   const [isError, setIsError] = useState(false)
   const [provider, setProvider] = useState<
-  ethers.BrowserProvider | undefined
->()
+    ethers.BrowserProvider | undefined
+  >()
 
   const login = useCallback(async () => {
     const { ethereum } = window as any

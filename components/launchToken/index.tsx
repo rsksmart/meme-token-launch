@@ -6,6 +6,16 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import CircleHelp from "@/components/icons/CircleHelp";
 import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
 
+const STRATEGY = {
+    INFLATIONARY: {
+        name: "Inflationary",
+        value: "inflationary"
+    },
+    DEFLATIONARY : {
+        name: "Deflationary",
+        value: "deflationary"
+    }
+}
 const LaunchToken: React.FC = () => {
 
     const [formData, setFormData] = useState({
@@ -52,8 +62,8 @@ const LaunchToken: React.FC = () => {
                             onChange={handleChange}
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         >
-                            <option value="inflationary">Inflationary</option>
-                            <option selected value="deflationary">Deflationary</option>
+                            <option value={STRATEGY.DEFLATIONARY.value}>{STRATEGY.DEFLATIONARY.name}</option>
+                            <option value={STRATEGY.INFLATIONARY.value}>{STRATEGY.INFLATIONARY.name}</option>
                         </select>
 
                     </div>

@@ -1,6 +1,7 @@
 import { useAuth } from "@/app/context/AuthContext";
 import { deployERC20Contract } from "thirdweb/deploys";
 import { RootstockTestnet } from "@/app/utils/chains/rootstockTestnet";
+import { useCallback, useState } from "react";
 
 const TOKEN_ERC20 = "TokenERC20";
 
@@ -17,30 +18,45 @@ export interface DeployERC20Props {
     strategy: string;
 }
 
-export async function deployERC20(props: DeployERC20Props): Promise<String> {
-    const {client, account } = useAuth();
+const useDeployERC20Token = () => {
+    const [isError, setIsError] = useState(false)
+    const [address, setAddress] = useState<String>()
 
-    const params: DeployERC20Params = {
-        name: props.name,
-        description: props.description,
-        symbol: props.symbol
-    }
+    const deployERC20 = useCallback( (props: DeployERC20Props) => {
+        const { client, account } = useAuth();
 
-    try {
-        // Deploy the ERC20 contract
-        const erc20Address = await deployERC20Contract({
-            chain: RootstockTestnet,
-            client,
-            account,
-            type: TOKEN_ERC20,
-            params
-        });
-        // Indicate success and display the contract address
-        //spinner.succeed(`ERC20 token deployed at address: ${erc20Address}`);
-        return erc20Address;
-    } catch (error) {
-        // Indicate failure and throw the error
-        //spinner.fail("Failed to deploy ERC20 contract");
-        throw error;
+        const params: DeployERC20Params = {
+            name: props.name,
+            description: props.description,
+            symbol: props.symbol
+        }
+
+        try {
+            // Deploy the ERC20 contract
+            // const erc20Address = await deployERC20Contract({
+            //     chain: RootstockTestnet,
+            //     client,
+            //     account,
+            //     type: TOKEN_ERC20,
+            //     params
+            // });
+            // Indicate success and display the contract address
+            //spinner.succeed(`ERC20 token deployed at address: ${erc20Address}`);
+            // return erc20Address;
+            setAddress("hola")
+        } catch (error) {
+            console.error('Error deploying contract', error)
+            setIsError(true)
+        }
+
+    }, [])
+
+    return {
+        deployERC20,
+        isError,
+        setIsError,
+        address
     }
 }
+
+export default useDeployERC20Token
