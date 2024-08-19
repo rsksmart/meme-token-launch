@@ -19,11 +19,12 @@ export interface DeployERC20Props {
 }
 
 const useDeployERC20Token = () => {
+    const { client, account } = useAuth();
+
     const [isError, setIsError] = useState(false)
     const [address, setAddress] = useState<String>()
 
-    const deployERC20 = useCallback( (props: DeployERC20Props) => {
-        const { client, account } = useAuth();
+    const deployERC20 = useCallback( async (props: DeployERC20Props) => {
 
         const params: DeployERC20Params = {
             name: props.name,
@@ -33,17 +34,16 @@ const useDeployERC20Token = () => {
 
         try {
             // Deploy the ERC20 contract
-            // const erc20Address = await deployERC20Contract({
-            //     chain: RootstockTestnet,
-            //     client,
-            //     account,
-            //     type: TOKEN_ERC20,
-            //     params
-            // });
+            const erc20Address = await deployERC20Contract({
+                chain: RootstockTestnet,
+                client,
+                account,
+                type: TOKEN_ERC20,
+                params
+            });
             // Indicate success and display the contract address
-            //spinner.succeed(`ERC20 token deployed at address: ${erc20Address}`);
-            // return erc20Address;
-            setAddress("hola")
+            // spinner.succeed(`ERC20 token deployed at address: ${erc20Address}`);
+            setAddress(erc20Address)
         } catch (error) {
             console.error('Error deploying contract', error)
             setIsError(true)

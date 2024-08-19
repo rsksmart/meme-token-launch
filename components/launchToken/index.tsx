@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import CircleHelp from "@/components/icons/CircleHelp";
+import HelpCircle from "@/components/icons/HelpCircle";
 import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
 
 const STRATEGY = {
@@ -48,7 +48,7 @@ const LaunchToken: React.FC = () => {
                             </label>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <CircleHelp className="w-4 h-4" />
+                                    <HelpCircle className="w-4 h-4" />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Select the strategy to deploy the ERC20 tokens.</p>
@@ -74,7 +74,7 @@ const LaunchToken: React.FC = () => {
                             </label>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <CircleHelp className="w-4 h-4" />
+                                    <HelpCircle className="w-4 h-4" />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Enter the name of the ERC20 token.</p>
@@ -97,7 +97,7 @@ const LaunchToken: React.FC = () => {
                             </label>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <CircleHelp className="w-4 h-4" />
+                                    <HelpCircle className="w-4 h-4" />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>
@@ -123,7 +123,7 @@ const LaunchToken: React.FC = () => {
                             </label>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <CircleHelp className="w-4 h-4" />
+                                    <HelpCircle className="w-4 h-4" />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Enter a description for the ERC20 token.</p>
