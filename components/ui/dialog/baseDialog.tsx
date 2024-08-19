@@ -18,7 +18,7 @@ function BaseDialog({ children, closeDialog, className, open }: Props) {
         style={{ maxHeight: '98vh' }}
       >
         <button
-          className="absolute w-[20px] right-6 text-[20px] font-semibold top-4"
+          className="absolute w-[32px] right-4 text-[32px] font-semibold top-6"
           id="close-btn"
           onClick={() => closeDialog()}
         >

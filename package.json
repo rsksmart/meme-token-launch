@@ -11,8 +11,10 @@
   "dependencies": {
     "ethers": "^6.13.2",
     "next": "14.2.5",
+    "pino-pretty": "^11.2.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "thirdweb": "^5.46.1"
   },
   "devDependencies": {
     "@types/node": "^20",

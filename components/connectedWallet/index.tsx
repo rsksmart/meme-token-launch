@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import MetamaskIcon from '@/components/icons/MetamaskIcon'
+import MetamaskIcon from '@/components/icons/Metamask'
 import { Button } from '@/components/ui/button'
 import { formatAddress } from '@/lib/utils'
 import { useAuth } from '@/app/context/AuthContext'
@@ -9,7 +9,7 @@ const ConnectedWallet: React.FC = () => {
     const { address } = useAuth()
 
     return (
-        <div className="">
+        <div>
             <Button
                 className="mt-10 bg-white text-2xl text-black before:w-[228px] active:bg-slate-400"
                 type="submit"
