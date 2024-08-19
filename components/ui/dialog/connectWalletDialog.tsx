@@ -22,7 +22,7 @@ function ConnectWalletDialog({ closeDialog, open }: props) {
     init()
     if(isLoggedIn) {
       authLogin(provider!)
-      router.push(ROUTER.TOKEN_LAUNCH)
+      router.push(ROUTER.DEPLOY_TOKEN)
       closeDialog()
       setIsError(false)
     }

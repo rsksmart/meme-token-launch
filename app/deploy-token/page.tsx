@@ -5,7 +5,7 @@ import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/navbar";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 import { useAuth } from "@/app/context/AuthContext";
-import LaunchToken from "@/components/launchToken";
+import DeployToken from "@/components/deployToken";
 
 export default function TokenLaunch() {
   const { isLoggedIn } = useAuth();
@@ -13,7 +13,7 @@ export default function TokenLaunch() {
   return (
     <main className="h-full w-full flex flex-col">
       <Navbar />
-      <section className="w-full mx-auto px-6 xl:px-0 my-4 md:w-[1000px] xl:w-[1300px]">
+      <section className="w-full px-6 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto mt-4">
         <div className="flex justify-between flex-row">
           <h1 className="md:text-6xl xl:text-[78px] relative z-10 font-bold text-black flex flex-col gap-2.5">
             <span className="max-w-max px-1.5 bg-white">Meme Token Launch</span>
@@ -39,9 +39,9 @@ export default function TokenLaunch() {
             )
           }
         </div>
-      </section>
-      <section className="w-full px-2 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto mt-4">
-        <LaunchToken />
+        <div className="m-8" >
+          <DeployToken />
+        </div>
       </section>
       <Footer />
     </main>

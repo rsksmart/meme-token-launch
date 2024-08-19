@@ -12,6 +12,6 @@ export interface AccountData {
 
 export const ROUTER = {
     INDEX: '/',
-    TOKEN_LAUNCH: '/token-launch',
+    DEPLOY_TOKEN: '/deploy-token',
   }
   

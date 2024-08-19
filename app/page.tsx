@@ -1,7 +1,7 @@
 'use client'
+
 import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/navbar";
-import { Card } from "@/components/ui/card";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 
 export default function Home() {
@@ -24,11 +24,12 @@ export default function Home() {
         </div>
         <div>
         </div>
-        <div className="mt-10">
-          <h1 className="text-4xl text-white font-semibold mt-4 mb-2">
+
+        <div className="mt-24">
+          <h1 className="text-4xl text-white font-semibold mb-2">
             Go to the app
           </h1>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center">
             <ConnectWalletButton />
           </div>
         </div>

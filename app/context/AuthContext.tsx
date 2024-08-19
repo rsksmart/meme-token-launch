@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
     useEffect(() => {
         if (isLoggedIn && pathname === ROUTER.INDEX) {
-            router.push(ROUTER.TOKEN_LAUNCH)
+            router.push(ROUTER.DEPLOY_TOKEN)
         }
     }, [pathname])
 

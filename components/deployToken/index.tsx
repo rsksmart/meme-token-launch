@@ -16,7 +16,7 @@ const STRATEGY = {
         value: "deflationary"
     }
 }
-const LaunchToken: React.FC = () => {
+const DeployToken: React.FC = () => {
 
     const [formData, setFormData] = useState({
         name: "",
@@ -149,4 +149,4 @@ const LaunchToken: React.FC = () => {
     )
 }
 
-export default LaunchToken;
+export default DeployToken;
