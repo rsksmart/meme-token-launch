@@ -1,7 +1,7 @@
 'use client'
 
-import Footer from "@/components/footer/Footer";
-import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 
 export default function Home() {
@@ -64,7 +64,7 @@ export default function Home() {
           <div className="flex-1 mt-4 border border-white rounded-3xl p-4">
             <div className="flex gap-2">
               <h3 className="bg-title pink w-max text-black text-3xl font-semibold px-2 py-1">
-                PROJECT
+                Project
               </h3>
               <span className="bg-title text-sm h-7 rounded-3xl w-7 flex justify-center items-center text-black font-semibold">
                 0.3

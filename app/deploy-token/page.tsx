@@ -1,8 +1,8 @@
 'use client'
 
 import ConnectedWallet from "@/components/connectedWallet";
-import Footer from "@/components/footer/Footer";
-import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 import { useAuth } from "@/app/context/AuthContext";
 import DeployToken from "@/components/deployToken";
