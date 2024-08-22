@@ -3,8 +3,6 @@ import { ROUTER } from '@/constants';
 import { ethers, Signer } from 'ethers';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useContext, createContext, ReactNode, useCallback, useEffect, Dispatch, SetStateAction } from 'react';
-import { createThirdwebClient, ThirdwebClient } from "thirdweb";
-import { privateKeyToAccount, Account } from "thirdweb/wallets";
 
 interface AuthContextType {
     isLoggedIn: boolean;

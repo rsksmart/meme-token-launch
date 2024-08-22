@@ -13,8 +13,7 @@
     "next": "14.2.5",
     "pino-pretty": "^11.2.2",
     "react": "^18",
-    "react-dom": "^18",
-    "thirdweb": "^5.46.1"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",

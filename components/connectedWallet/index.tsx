@@ -10,7 +10,6 @@ type Props = {
     className?: string
 }
 
-
 const variants = cva("");
 
 const ConnectedWallet = ({ className }: Props) => {
@@ -25,7 +24,7 @@ const ConnectedWallet = ({ className }: Props) => {
                 </div>
                 <button
                     onClick={logout}
-                    className="bg-card border rounded-md px-6 hover:bg-purple-600 flex flex-row gap-2 hover:bg-accent transition-colors items-center justify-center"
+                    className="bg-card border rounded-md px-6 hover:bg-purple-600 flex flex-row gap-2 transition-colors items-center justify-center"
                 >
                     <SignOutIcon className="w-5 h-5"/>
                     <div >Sign out</div>
