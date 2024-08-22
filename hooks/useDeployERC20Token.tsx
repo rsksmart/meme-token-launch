@@ -21,6 +21,8 @@ const useDeployERC20Token = () => {
   const {FACTORY_ADDRESS, TOKEN_CREATED_EVENT} = env;
 
   const [isError, setIsError] = useState(false)
+  
+  const [txHash, setTxHash] = useState()
   const [contractAddress, setContractAddress] = useState()
 
   const factory = new ethers.Contract(FACTORY_ADDRESS, MemeTokenFactoryAbi, signer);
@@ -66,6 +68,8 @@ const useDeployERC20Token = () => {
     }
 
     const tx = await strategyToFunctionMapper[strategy](params)
+    setTxHash(tx.hash)
+
     const contractAddress = await getContractAddress(tx)
     setContractAddress(contractAddress);
   }, [])
@@ -74,7 +78,8 @@ const useDeployERC20Token = () => {
     deployERC20,
     isError,
     setIsError,
-    contractAddress
+    contractAddress,
+    txHash
   }
 }
 

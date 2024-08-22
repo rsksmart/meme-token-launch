@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import BaseDialog from '@/components/ui/dialog/baseDialog'
-import {MetamaskIcon, ErrorCircleIcon, CheckCircleIcon} from '@/components/icons'
+import { MetamaskIcon, ErrorCircleIcon, CheckCircleIcon, CopyIcon, InfoCircleIcon } from '@/components/icons'
 import useDeployERC20Token, { DeployERC20Props } from '@/hooks/useDeployERC20Token'
+import { copyToClipboard, formatAddress } from '@/lib/utils'
+import { Tooltip, TooltipTrigger } from '../tooltip'
 
 type props = {
   closeDialog: Function
@@ -13,8 +15,30 @@ const TX_URL = "https://explorer.testnet.rootstock.io/tx/"
 const ADDRESS_URL = "https://explorer.testnet.rootstock.io/address/"
 
 function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
-  const { deployERC20, isError, setIsError, contractAddress } = useDeployERC20Token();
+  const { deployERC20, isError, setIsError, contractAddress, txHash } = useDeployERC20Token();
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
+
+  const [txHashCopied, setTxHashCopied] = useState(false);
+  const [contractAddressCopied, setContractAddressCopied] = useState(false);
+
+
+  useEffect(() => {
+    if (txHashCopied) {
+      const timer = setTimeout(() => {
+        setTxHashCopied(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [txHashCopied]);
+
+  useEffect(() => {
+    if (contractAddressCopied) {
+      const timer = setTimeout(() => {
+        setContractAddressCopied(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [contractAddressCopied]);
 
   useEffect(() => {
     if (!isDeployed && !contractAddress) {
@@ -40,37 +64,118 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
   }
 
   return (
+
     <BaseDialog
       closeDialog={closeDialog}
       open={open}
-      className="w-[500px] h-[350px]"
+      className={isDeployed ? "w-[500px] " : "w-[500px] h-[350px]"}
     >
       {isDeployed ? (
         <div className="flex flex-col items-center">
-          <h2 className="text-xl text-slate-100 text-center font-semibold mb-10 mt-10">
+          <h2 className="text-2xl text-slate-100 text-center font-semibold mb-6 mt-6">
             Contract deployed!
           </h2>
-          <CheckCircleIcon className="w-[100px] h-[100px]" />
-          <a
-            href={ADDRESS_URL + contractAddress}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xl underline hover:text-orange-500 mt-8 font-bold"
-          >
-            See contract
-          </a>
+          <CheckCircleIcon className="w-[70px] h-[70px] text-custom-green" />
+          <div className='w-full flex flex row items-center justify-center text-xl mt-6'>
+            Transaction id:
+            <a
+              href={TX_URL + txHash}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-500 ml-3"
+            >
+              {formatAddress(txHash!)}
+            </a>
+            <div className='ml-2 flex items-center'>
+              <Tooltip >
+                <TooltipTrigger>
+                  {txHashCopied ? (
+                    <CheckCircleIcon
+                      onClick={() => {
+                        copyToClipboard(txHash!);
+                      }}
+                      className="w-5 h-5 text-green-500"
+                    ></CheckCircleIcon>
+                  ) : (
+                    <CopyIcon
+                      onClick={() => {
+                        copyToClipboard(txHash!);
+                        setTxHashCopied(true);
+                      }}
+                      className="w-5 h-5 hover:text-white cursor-pointer"
+                    />
+                  )}
+                </TooltipTrigger>
+              </Tooltip>
+            </div>
+          </div>
+          <div className='w-full flex flex row items-center justify-center text-xl'>
+            Contract address:
+            <a
+              href={ADDRESS_URL + contractAddress}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-500 ml-3"
+            >
+              {formatAddress(contractAddress!)}
+            </a>
+            <div className='ml-2 flex items-center'>
+              <Tooltip >
+                <TooltipTrigger>
+                  {contractAddressCopied ? (
+                    <CheckCircleIcon
+                      onClick={() => {
+                        copyToClipboard(contractAddress!);
+                      }}
+                      className="w-5 h-5 text-green-500"
+                    ></CheckCircleIcon>
+                  ) : (
+                    <CopyIcon
+                      onClick={() => {
+                        copyToClipboard(contractAddress!);
+                        setContractAddressCopied(true);
+                      }}
+                      className="w-5 h-5 hover:text-white cursor-pointer"
+                    />
+                  )}
+                </TooltipTrigger>
+              </Tooltip>
+            </div>
+          </div>
+          <div className='w-full  mt-8 '>
+            <div className='bg-custom-cyan rounded-md w-full p-4 px-6 flex flex-col gap-2 text-black'>
+              <div className='text-xl w-full flex flex-row items-center gap-2'>
+                <InfoCircleIcon className='w-5 h-5' /> Info
+              </div>
+              <div className='ml-6'>
+                <ul className="list-disc">
+                  <li>Make sure that you've save a copy of the contract address. You could lost access to your tokens.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div>
           {!isError ? (
-            <div>
-              <h2 className="text-2xl text-slate-100 text-center font-semibold mb-10 mt-6">
+            <div className='flex flex-col items-center'>
+              <h2 className="text-2xl text-slate-100 text-center font-semibold mb-8 mt-6">
                 Deploying contract
               </h2>
               <div className="relative flex justify-center items-center">
-                <MetamaskIcon className="w-[100px] h-[100px] absolute" />
-                <div className="animate-spin border border-r-slate-300 w-[200px] h-[200px] rounded-full"></div>
+                <MetamaskIcon className="w-[700px] h-[70px] absolute" />
+                <div className="animate-spin border border-r-slate-300 w-[140px] h-[140px] rounded-full"></div>
               </div>
+              {txHash && (
+                <a
+                  href={TX_URL + txHash}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xl underline hover:text-orange-500 mt-8 font-bold"
+                >
+                  See transaction
+                </a>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center">
@@ -79,7 +184,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
               </h2>
               <ErrorCircleIcon className="w-[100px] h-[100px]" />
               <a
-                href={TX_URL + ""} // TODO add transaction here
+                href={TX_URL + txHash}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xl underline hover:text-orange-500 mt-8 font-bold"

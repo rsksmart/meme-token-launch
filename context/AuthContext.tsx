@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
                 logout,
                 setAddress,
                 setSigner,
-                setIsLoggedIn
+                setIsLoggedIn,
             }
             }
         >
