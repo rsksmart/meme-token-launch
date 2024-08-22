@@ -1,6 +1,4 @@
-import * as React from "react";
-
-function SignOutIcon(props: React.SVGProps<SVGSVGElement>) {
+export function SignOutIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
             fill="none"
@@ -18,5 +16,3 @@ function SignOutIcon(props: React.SVGProps<SVGSVGElement>) {
         </svg>
     );
 }
-
-export default SignOutIcon;

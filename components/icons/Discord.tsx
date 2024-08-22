@@ -1,4 +1,4 @@
-export function Discord({ className }: { className?: string }): JSX.Element {
+export function DiscordIcon({ className }: { className?: string }): JSX.Element {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

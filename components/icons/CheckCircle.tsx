@@ -1,6 +1,4 @@
-import * as React from "react";
-
-function CheckCircle(props: React.SVGProps<SVGSVGElement>) {
+export function CheckCircleIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
             viewBox="0 0 1024 1024"
@@ -15,5 +13,3 @@ function CheckCircle(props: React.SVGProps<SVGSVGElement>) {
         </svg>
     );
 }
-
-export default CheckCircle;

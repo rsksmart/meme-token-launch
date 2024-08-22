@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import HelpCircle from "@/components/icons/HelpCircle";
 import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
 import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM } from "@/constants";
 import { useAuth } from "@/context/AuthContext";
-import ConnectWalletButton from "../ui/connectWalletButton";
+import ConnectWalletButton from "@/components/ui/connectWalletButton";
+import { HelpCircleIcon } from "@/components/icons";
 
 const DeployToken: React.FC = () => {
     const { isLoggedIn } = useAuth();
@@ -58,7 +58,7 @@ const DeployToken: React.FC = () => {
                         </label>
                         <Tooltip>
                             <TooltipTrigger>
-                                <HelpCircle className="w-4 h-4" />
+                                <HelpCircleIcon className="w-4 h-4" />
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>Select the strategy to deploy the ERC20 tokens.</p>
@@ -84,7 +84,7 @@ const DeployToken: React.FC = () => {
                         </label>
                         <Tooltip>
                             <TooltipTrigger>
-                                <HelpCircle className="w-4 h-4" />
+                                <HelpCircleIcon className="w-4 h-4" />
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>Enter the name of the ERC20 token.</p>
@@ -107,7 +107,7 @@ const DeployToken: React.FC = () => {
                         </label>
                         <Tooltip>
                             <TooltipTrigger>
-                                <HelpCircle className="w-4 h-4" />
+                                <HelpCircleIcon className="w-4 h-4" />
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>
@@ -133,7 +133,7 @@ const DeployToken: React.FC = () => {
                         </label>
                         <Tooltip>
                             <TooltipTrigger>
-                                <HelpCircle className="w-4 h-4" />
+                                <HelpCircleIcon className="w-4 h-4" />
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>Enter the Initial Supply for the ERC20 token. It should be in decimal string. </p>
@@ -158,7 +158,7 @@ const DeployToken: React.FC = () => {
                             </label>
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <HelpCircle className="w-4 h-4" />
+                                    <HelpCircleIcon className="w-4 h-4" />
                                 </TooltipTrigger>
                                 <TooltipContent>
                                     <p>Enter the Max Supply for the ERC20 token. It should be in decimal string.</p>

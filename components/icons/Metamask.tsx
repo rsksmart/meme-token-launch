@@ -1,6 +1,4 @@
-import React from 'react'
-
-function Metamask({ className }: { className?: string }) {
+export function MetamaskIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
@@ -134,5 +132,3 @@ function Metamask({ className }: { className?: string }) {
     </svg>
   )
 }
-
-export default Metamask

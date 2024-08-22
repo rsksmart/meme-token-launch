@@ -1,4 +1,4 @@
-import CloseIcon from '@/components/icons/CloseIcon'
+import { CloseIcon } from '@/components/icons'
 import React from 'react'
 
 interface Props {

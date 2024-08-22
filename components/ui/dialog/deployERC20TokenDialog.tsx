@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import BaseDialog from '@/components/ui/dialog/baseDialog'
-import MetamaskIcon from '@/components/icons/Metamask'
+import {MetamaskIcon, ErrorCircleIcon, CheckCircleIcon} from '@/components/icons'
 import useDeployERC20Token, { DeployERC20Props } from '@/hooks/useDeployERC20Token'
-import ErrorCircle from '@/components/icons/ErrorCircle'
-import CheckCircle from '@/components/icons/CheckCircle'
 
 type props = {
   closeDialog: Function
@@ -52,7 +50,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
           <h2 className="text-xl text-slate-100 text-center font-semibold mb-10 mt-10">
             Contract deployed!
           </h2>
-          <CheckCircle className="w-[100px] h-[100px]" />
+          <CheckCircleIcon className="w-[100px] h-[100px]" />
           <a
             href={ADDRESS_URL + contractAddress}
             target="_blank"
@@ -79,7 +77,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
               <h2 className="text-xl text-slate-100 text-center font-semibold mb-10 mt-6">
                 Ups! Something went wrong during the deployment
               </h2>
-              <ErrorCircle className="w-[100px] h-[100px]" />
+              <ErrorCircleIcon className="w-[100px] h-[100px]" />
               <a
                 href={TX_URL + ""} // TODO add transaction here
                 target="_blank"

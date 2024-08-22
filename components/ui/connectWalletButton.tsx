@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import ConnectWalletDialog from '@/components/ui/dialog/connectWalletDialog'
-import Metamask from '@/components/icons/Metamask'
+import { MetamaskIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
@@ -35,7 +35,7 @@ const ConnectWalletButton = ({ title = 'Connect wallet', className }: Props) => 
         variant={'outline'}
         onClick={() => setDialog(true)}
       >
-        <Metamask className="w-5 h-5 mr-2" /> {title}
+        <MetamaskIcon className="w-5 h-5 mr-2" /> {title}
       </Button>
     </div>
   )

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import BaseDialog from '@/components/ui/dialog/baseDialog'
-import MetamaskIcon from '@/components/icons/Metamask'
+import { MetamaskIcon } from '@/components/icons'
 import useConnectWallet from '@/hooks/useConnectWallet'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
@@ -14,13 +14,13 @@ type props = {
 
 function ConnectWalletDialog({ closeDialog, open }: props) {
   const { login, provider, isError, setIsError } = useConnectWallet()
-  const { isLoggedIn,  login: authLogin  } = useAuth()
+  const { isLoggedIn, login: authLogin } = useAuth()
 
   const router = useRouter()
 
   useEffect(() => {
     init()
-    if(isLoggedIn) {
+    if (isLoggedIn) {
       authLogin(provider!)
       router.push(ROUTER.DEPLOY_TOKEN)
       closeDialog()

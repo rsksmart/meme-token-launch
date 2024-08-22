@@ -1,6 +1,4 @@
-import * as React from "react";
-
-function HelpCircle({ className }: { className?: string }) {
+export function HelpCircleIcon({ className }: { className?: string }) {
     return (
         <svg
             viewBox="0 0 24 24"
@@ -15,5 +13,3 @@ function HelpCircle({ className }: { className?: string }) {
         </svg>
     );
 }
-
-export default HelpCircle;

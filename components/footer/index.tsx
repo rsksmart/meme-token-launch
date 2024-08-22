@@ -1,4 +1,4 @@
-import { Discord, Github, Twitter } from '@/components/icons'
+import { DiscordIcon, GithubIcon, TwitterIcon } from '@/components/icons'
 
 export default function Footer(): JSX.Element {
   return (
@@ -45,7 +45,7 @@ export default function Footer(): JSX.Element {
           className="hover:opacity-80 transition"
         >
           <li>
-            <Twitter />
+            <TwitterIcon />
           </li>
         </a>
         <a
@@ -55,7 +55,7 @@ export default function Footer(): JSX.Element {
           className="hover:opacity-80 transition"
         >
           <li>
-            <Github />
+            <GithubIcon />
           </li>
         </a>
         <a
@@ -65,7 +65,7 @@ export default function Footer(): JSX.Element {
           className="hover:opacity-80 transition -ml-1"
         >
           <li>
-            <Discord />
+            <DiscordIcon />
           </li>
         </a>
       </ul>

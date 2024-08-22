@@ -1,10 +1,9 @@
 'use client'
 import React from 'react'
-import MetamaskIcon from '@/components/icons/Metamask'
-import SignOutIcon from '@/components/icons/SignOut'
 import { cn, formatAddress } from '@/lib/utils'
 import { useAuth } from '@/context/AuthContext'
 import { cva } from 'class-variance-authority'
+import { MetamaskIcon, SignOutIcon } from '@/components/icons'
 
 type Props = {
     className?: string

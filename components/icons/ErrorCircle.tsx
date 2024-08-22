@@ -1,6 +1,4 @@
-import * as React from "react";
-
-function ErrorCircle(props: React.SVGProps<SVGSVGElement>) {
+export function ErrorCircleIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
             viewBox="0 0 24 24"
@@ -15,5 +13,3 @@ function ErrorCircle(props: React.SVGProps<SVGSVGElement>) {
         </svg>
     );
 }
-
-export default ErrorCircle;
