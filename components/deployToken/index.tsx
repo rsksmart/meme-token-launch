@@ -177,7 +177,7 @@ const DeployToken: React.FC = () => {
                     </div>
                 )}
             </CardContent>
-            <CardFooter className="px-0 relative z-0 justify-end mb-6 mr-6">
+            <CardFooter className="px-0 relative justify-end mb-6 mr-6">
                 {isLoggedIn ? (
                     <DeployERC20TokenButton disabled={!isFormCompleted} params={formData} />
                 ) : (
