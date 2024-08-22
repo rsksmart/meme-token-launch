@@ -30,7 +30,7 @@ export default function Home() {
             Go to the app
           </h1>
           <div className="flex items-center">
-            <ConnectWalletButton className="mt-2" />
+            <ConnectWalletButton className="mt-3" />
           </div>
         </div>
 
