@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 
 import BaseDialog from '@/components/ui/dialog/baseDialog'
 import MetamaskIcon from '@/components/icons/Metamask'
-import useConnectWallet from '@/app/utils/hooks/useConnectWallet'
+import useConnectWallet from '@/hooks/useConnectWallet'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/app/context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 import { ROUTER } from '@/constants'
 
 type props = {

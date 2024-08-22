@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import BaseDialog from '@/components/ui/dialog/baseDialog'
 import MetamaskIcon from '@/components/icons/Metamask'
-import useDeployERC20Token, { DeployERC20Props } from '@/app/utils/hooks/useDeployERC20Token'
+import useDeployERC20Token, { DeployERC20Props } from '@/hooks/useDeployERC20Token'
 import ErrorCircle from '@/components/icons/ErrorCircle'
 import CheckCircle from '@/components/icons/CheckCircle'
 
@@ -15,20 +15,19 @@ const TX_URL = "https://explorer.testnet.rootstock.io/tx/"
 const ADDRESS_URL = "https://explorer.testnet.rootstock.io/address/"
 
 function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
-  const { deployERC20, isError, setIsError, address } = useDeployERC20Token();
+  const { deployERC20, isError, setIsError, contractAddress } = useDeployERC20Token();
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
 
   useEffect(() => {
-    if (!isDeployed && !address) {
+    if (!isDeployed && !contractAddress) {
       init()
     }
 
-    if (address) {
+    if (contractAddress) {
       setIsDeployed(true)
-      alert(address)
       setIsError(false)
     }
-  }, [address])
+  }, [contractAddress])
 
   const init = () => {
     setIsError(false)
@@ -55,7 +54,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
           </h2>
           <CheckCircle className="w-[100px] h-[100px]" />
           <a
-            href={ADDRESS_URL + address}
+            href={ADDRESS_URL + contractAddress}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xl underline hover:text-orange-500 mt-8 font-bold"

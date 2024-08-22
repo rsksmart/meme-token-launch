@@ -1,8 +1,8 @@
 'use client'
 import { ROUTER } from '@/constants';
-import { ethers } from 'ethers';
+import { ethers, Signer } from 'ethers';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState, useContext, createContext, ReactNode, useCallback, useEffect } from 'react';
+import { useState, useContext, createContext, ReactNode, useCallback, useEffect, Dispatch, SetStateAction } from 'react';
 import { createThirdwebClient, ThirdwebClient } from "thirdweb";
 import { privateKeyToAccount, Account } from "thirdweb/wallets";
 
@@ -10,12 +10,12 @@ interface AuthContextType {
     isLoggedIn: boolean;
     provider: ethers.BrowserProvider | undefined;
     address: string;
-    client: ThirdwebClient;
-    account: Account;
+    signer: Signer | undefined;
     login: (provider: ethers.BrowserProvider) => void;
     logout: () => void;
     setAddress: React.Dispatch<React.SetStateAction<string>>;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+    setSigner: Dispatch<SetStateAction<ethers.Signer | undefined>>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -24,23 +24,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     children,
 }) => {
 
-    const clientId = process.env.NEXT_PUBLIC_CLIENT_ID;
-    const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY;
-
-    if (!clientId || !privateKey) {
-        throw new Error("Missing environment variables");
-    }
-    const client = createThirdwebClient({
-        clientId
-    });
-
-    const account = privateKeyToAccount({ privateKey, client });
-
+    // const clientId = process.env.NEXT_PUBLIC_CLIENT_ID; TODO
 
     const router = useRouter()
     const pathname = usePathname()
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [address, setAddress] = useState<string>('')
+    const [signer, setSigner] = useState<Signer | undefined >()
     const [provider, setProvider] = useState<ethers.BrowserProvider | undefined>(
         undefined
     )
@@ -68,11 +58,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
                 isLoggedIn,
                 provider,
                 address,
-                client,
-                account,
+                signer,
                 login,
                 logout,
                 setAddress,
+                setSigner,
                 setIsLoggedIn
             }
             }

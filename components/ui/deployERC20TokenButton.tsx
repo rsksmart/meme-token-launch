@@ -3,17 +3,18 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import DeployERC20TokenDialog from '@/components/ui/dialog/deployERC20TokenDialog'
-import { DeployERC20Props } from '@/app/utils/hooks/useDeployERC20Token'
+import { DeployERC20Props } from '@/hooks/useDeployERC20Token'
 
 type Props = {
+  disabled: boolean
   params: DeployERC20Props
 }
 
-const DeployERC20TokenButton = ({params}: Props) => {
+const DeployERC20TokenButton = ({disabled, params}: Props) => {
   const [dialog, setDialog] = useState<boolean>(false)
 
   return (
-    <div className="">
+    <div>
       {dialog && (
         <DeployERC20TokenDialog
           closeDialog={() => setDialog(false)}
@@ -22,8 +23,9 @@ const DeployERC20TokenButton = ({params}: Props) => {
         />
       )}
       <Button
-        className="mt-5 w-32 bg-white text-2xl text-black before:w-28 active:bg-slate-400"
+        className="w-32 bg-white text-2xl text-black before:w-28 active:bg-slate-400"
         type="submit"
+        disabled={disabled}
         variant={'outline'}
         onClick={() => setDialog(true)}
       >

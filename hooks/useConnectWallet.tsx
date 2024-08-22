@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
 import { ethers } from 'ethers'
 
-import { useAuth } from '@/app/context/AuthContext'
+import { useAuth } from '@/context/AuthContext'
 
 const useConnectWallet = () => {
-  const { setAddress, setIsLoggedIn } = useAuth()
+  const { setAddress, setIsLoggedIn, setSigner } = useAuth()
 
   const [isError, setIsError] = useState(false)
   const [provider, setProvider] = useState<
@@ -21,6 +21,7 @@ const useConnectWallet = () => {
 
       setIsLoggedIn(true)
       setAddress(address)
+      setSigner(signer)
       setProvider(provider)
     } catch (error) {
       console.error('Error connecting to wallet', error)

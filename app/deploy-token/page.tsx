@@ -4,7 +4,7 @@ import ConnectedWallet from "@/components/connectedWallet";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import DeployToken from "@/components/deployToken";
 
 export default function TokenLaunch() {
@@ -39,8 +39,10 @@ export default function TokenLaunch() {
             )
           }
         </div>
-        <div className="m-8" >
-          <DeployToken />
+        <div className="mt-10 w-full flex justify-center">
+          <div className="flex w-[760px]">
+            <DeployToken />
+          </div>
         </div>
       </section>
       <Footer />

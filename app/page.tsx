@@ -30,11 +30,11 @@ export default function Home() {
             Go to the app
           </h1>
           <div className="flex items-center">
-            <ConnectWalletButton />
+            <ConnectWalletButton className="mt-2" />
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex mt-20">
           <div className="flex-1 mt-4 border border-white rounded-3xl p-4">
             <div className="flex gap-2">
               <h3 className="bg-custom-lime w-max text-black text-3xl font-semibold px-2 py-1">

@@ -1,37 +1,48 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import HelpCircle from "@/components/icons/HelpCircle";
 import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
+import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM } from "@/constants";
+import { useAuth } from "@/context/AuthContext";
+import ConnectWalletButton from "../ui/connectWalletButton";
 
-const STRATEGY = {
-    INFLATIONARY: {
-        name: "Inflationary",
-        value: "inflationary"
-    },
-    DEFLATIONARY : {
-        name: "Deflationary",
-        value: "deflationary"
-    }
-}
 const DeployToken: React.FC = () => {
+    const { isLoggedIn } = useAuth();
 
     const [formData, setFormData] = useState({
         name: "",
         symbol: "",
-        description: "",
-        strategy: "deflationary",
+        initialSupply: "",
+        maxSupply: "",
+        strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
     });
+
+    const [isFormCompleted, setIsFormCompleted] = useState(false)
+
+    const hasEmptyField = () => {
+        return Object.entries(formData).some(([key, value]) => {
+            if (key === "maxSupply" && formData.strategy === DEPLOY_STRATEGY_ENUM.INFLATIONARY) {
+                return false;
+            }
+            return value === "";
+        });
+    };
 
     const handleChange = (e: { target: { name: any; value: any } }) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData((prevData) => ({
+            ...prevData,
             [name]: value,
-        });
+        }));
+
     };
+
+    useEffect(() => {
+        setIsFormCompleted(!hasEmptyField())
+    }, [formData])
 
     return (
         <Card>
@@ -40,110 +51,140 @@ const DeployToken: React.FC = () => {
                 <CardDescription>Deploy your meme token on Rootstock!</CardDescription>
             </CardHeader>
             <CardContent>
-                <div>
-                    <div className="my-6">
-                        <div className="flex-row flex gap-2 items-center">
-                            <label htmlFor="address" className="block">
-                                Strategy
-                            </label>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <HelpCircle className="w-4 h-4" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>Select the strategy to deploy the ERC20 tokens.</p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </div>
-                        <select
-                            name="strategy"
-                            id="strategy"
-                            value={formData.strategy}
-                            onChange={handleChange}
-                            className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
-                        >
-                            <option value={STRATEGY.DEFLATIONARY.value}>{STRATEGY.DEFLATIONARY.name}</option>
-                            <option value={STRATEGY.INFLATIONARY.value}>{STRATEGY.INFLATIONARY.name}</option>
-                        </select>
+                <div className="">
+                    <div className="flex-row flex gap-2 items-center">
+                        <label htmlFor="strategy" className="block">
+                            Strategy
+                        </label>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <HelpCircle className="w-4 h-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Select the strategy to deploy the ERC20 tokens.</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                    <select
+                        name="strategy"
+                        id="strategy"
+                        value={formData.strategy}
+                        onChange={handleChange}
+                        className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                    >
+                        <option value={DEPLOY_STRATEGY_ENUM.DEFLATIONARY}>{DEPLOY_STRATEGY.DEFLATIONARY.name}</option>
+                        <option value={DEPLOY_STRATEGY_ENUM.INFLATIONARY}>{DEPLOY_STRATEGY.INFLATIONARY.name}</option>
+                    </select>
 
-                    </div>
-                    <div className="my-6">
-                        <div className="flex-row flex gap-2 items-center">
-                            <label htmlFor="address" className="block">
-                                Name
-                            </label>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <HelpCircle className="w-4 h-4" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>Enter the name of the ERC20 token.</p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </div>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
-                        />
-                    </div>
-                    <div className="my-6">
-                        <div className="flex-row flex gap-2 items-center">
-                            <label htmlFor="token_id" className="block">
-                                Symbol
-                            </label>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <HelpCircle className="w-4 h-4" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>
-                                        Enter the symbol of the ERC20 token
-                                    </p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </div>
-
-                        <input
-                            type="text"
-                            name="symbol"
-                            id="symbol"
-                            value={formData.symbol}
-                            onChange={handleChange}
-                            className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
-                        />
-                    </div>
-                    <div className="mt-6">
-                        <div className="flex-row flex gap-2 items-center">
-                            <label htmlFor="price" className="">
-                                Description
-                            </label>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <HelpCircle className="w-4 h-4" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>Enter a description for the ERC20 token.</p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </div>
-
-                        <input
-                            type="text"
-                            name="description"
-                            id="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
-                        />
-                    </div>
                 </div>
+                <div className="my-4">
+                    <div className="flex-row flex gap-2 items-center">
+                        <label htmlFor="name" className="block">
+                            Name
+                        </label>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <HelpCircle className="w-4 h-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Enter the name of the ERC20 token.</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                    />
+                </div>
+                <div className="my-4">
+                    <div className="flex-row flex gap-2 items-center">
+                        <label htmlFor="symbol" className="block">
+                            Symbol
+                        </label>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <HelpCircle className="w-4 h-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>
+                                    Enter the symbol of the ERC20 token.
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+
+                    <input
+                        type="text"
+                        name="symbol"
+                        id="symbol"
+                        value={formData.symbol}
+                        onChange={handleChange}
+                        className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                    />
+                </div>
+                <div className="mt-4">
+                    <div className="flex-row flex gap-2 items-center">
+                        <label htmlFor="initialSupply" className="">
+                            Initial Supply
+                        </label>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <HelpCircle className="w-4 h-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Enter the Initial Supply for the ERC20 token. It should be in decimal string. </p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+
+                    <input
+                        type="text"
+                        name="initialSupply"
+                        id="initialSupply"
+                        value={formData.initialSupply}
+                        onChange={handleChange}
+                        className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                    />
+                </div>
+                {formData.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY && (
+                    <div className="mt-4">
+                        <div className="flex-row flex gap-2 items-center">
+                            <label htmlFor="maxSupply" className="">
+                                Max Supply
+                            </label>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <HelpCircle className="w-4 h-4" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Enter the Max Supply for the ERC20 token. It should be in decimal string.</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
+
+                        <input
+                            type="text"
+                            name="maxSupply"
+                            id="maxSupply"
+                            value={formData.maxSupply}
+                            onChange={handleChange}
+                            className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                        />
+                    </div>
+                )}
             </CardContent>
             <CardFooter className="px-0 relative z-0 justify-end mb-6 mr-6">
-                <DeployERC20TokenButton params={formData} />
+                {isLoggedIn ? (
+                    <DeployERC20TokenButton disabled={!isFormCompleted} params={formData} />
+                ) : (
+
+                    <ConnectWalletButton title="Connect wallet to deploy" />
+                )
+                }
             </CardFooter>
         </Card>
     )
