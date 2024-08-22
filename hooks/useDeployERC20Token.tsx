@@ -1,11 +1,8 @@
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useState } from "react";
 import { ethers } from "ethers";
-import FACTORY_ABI from "../abi/TokenFactory";
+import MemeTokenFactoryAbi from "@/contracts/abi/MemeTokenFactory";
 import { DEPLOY_STRATEGY_ENUM } from "@/constants";
-
-const FACTORY_ADDRESS = "0xdBd55bbE2A8f5cEb213Ef0f1ea27446b86f9E554"
-const TOKEN_CREATED_EVENT = "TokenCreated"
 
 type DeployERC20Params = {
   name: string;
@@ -20,12 +17,13 @@ export type DeployERC20Props = DeployERC20Params & {
 
 
 const useDeployERC20Token = () => {
-  const { signer, address: signerAddress } = useAuth();
+  const { signer, address: signerAddress, env } = useAuth();
+  const {FACTORY_ADDRESS, TOKEN_CREATED_EVENT} = env;
 
   const [isError, setIsError] = useState(false)
   const [contractAddress, setContractAddress] = useState()
 
-  const factory = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, signer);
+  const factory = new ethers.Contract(FACTORY_ADDRESS, MemeTokenFactoryAbi, signer);
 
   const deployInflationaryToken = ({ name, symbol, initialSupply }: DeployERC20Params) => {
     const _initialSupply = ethers.parseUnits(initialSupply, 18); 

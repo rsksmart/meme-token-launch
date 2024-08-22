@@ -1,4 +1,4 @@
-const FACTORY_ABI = [
+const MemeTokenFactoryAbi = [
 	{
 		"anonymous": false,
 		"inputs": [
@@ -75,4 +75,4 @@ const FACTORY_ABI = [
 	}
 ]
 
-export default FACTORY_ABI
+export default MemeTokenFactoryAbi

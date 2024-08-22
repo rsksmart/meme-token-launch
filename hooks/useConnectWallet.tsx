@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react'
 import { ethers } from 'ethers'
-
 import { useAuth } from '@/context/AuthContext'
 
 const useConnectWallet = () => {
