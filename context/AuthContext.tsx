@@ -7,6 +7,8 @@ import { useState, useContext, createContext, ReactNode, useCallback, useEffect,
 type EnvironmentVariables = {
     FACTORY_ADDRESS: string
     TOKEN_CREATED_EVENT: string
+    EXPLORER_TX_BASE_URL: string
+    EXPLORER_ADDRESS_BASE_URL: string
 }
 
 interface AuthContextType {
@@ -29,15 +31,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
     const FACTORY_ADDRESS = process.env.NEXT_PUBLIC_FACTORY_ADDRESS
     const TOKEN_CREATED_EVENT = process.env.NEXT_PUBLIC_TOKEN_CREATED_EVENT
+    const EXPLORER_TX_BASE_URL = process.env.NEXT_PUBLIC_EXPLORER_TX_BASE_URL
+    const EXPLORER_ADDRESS_BASE_URL = process.env.NEXT_PUBLIC_EXPLORER_ADDRESS_BASE_URL
 
 
-    if (!FACTORY_ADDRESS || !TOKEN_CREATED_EVENT) {
+    if (!FACTORY_ADDRESS || !TOKEN_CREATED_EVENT || !EXPLORER_TX_BASE_URL || !EXPLORER_ADDRESS_BASE_URL) {
         throw new Error("Environment variables are not complete");
     }
 
     const env = {
         FACTORY_ADDRESS,
-        TOKEN_CREATED_EVENT
+        TOKEN_CREATED_EVENT,
+        EXPLORER_TX_BASE_URL,
+        EXPLORER_ADDRESS_BASE_URL
     }
 
     const router = useRouter()

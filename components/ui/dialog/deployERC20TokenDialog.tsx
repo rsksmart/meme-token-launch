@@ -4,6 +4,7 @@ import { MetamaskIcon, ErrorCircleIcon, CheckCircleIcon, CopyIcon, InfoCircleIco
 import useDeployERC20Token, { DeployERC20Props } from '@/hooks/useDeployERC20Token'
 import { copyToClipboard, formatAddress } from '@/lib/utils'
 import { Tooltip, TooltipTrigger } from '../tooltip'
+import { useAuth } from '@/context/AuthContext'
 
 type props = {
   closeDialog: Function
@@ -11,10 +12,8 @@ type props = {
   params: DeployERC20Props
 }
 
-const TX_URL = "https://explorer.testnet.rootstock.io/tx/"
-const ADDRESS_URL = "https://explorer.testnet.rootstock.io/address/"
-
 function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
+  const { env } = useAuth();
   const { deployERC20, isError, setIsError, contractAddress, txHash } = useDeployERC20Token();
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
 
@@ -79,7 +78,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
           <div className='w-full flex flex row items-center justify-center text-xl mt-6'>
             Transaction id:
             <a
-              href={TX_URL + txHash}
+              href={env.EXPLORER_TX_BASE_URL + txHash}
               target="_blank"
               rel="noopener noreferrer"
               className="underline text-blue-500 ml-3"
@@ -112,7 +111,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
           <div className='w-full flex flex row items-center justify-center text-xl'>
             Contract address:
             <a
-              href={ADDRESS_URL + contractAddress}
+              href={env.EXPLORER_ADDRESS_BASE_URL + contractAddress}
               target="_blank"
               rel="noopener noreferrer"
               className="underline text-blue-500 ml-3"
@@ -158,22 +157,22 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
       ) : (
         <div>
           {!isError ? (
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col justify-center items-center'>
               <h2 className="text-2xl text-slate-100 text-center font-semibold mb-8 mt-6">
                 Deploying contract
               </h2>
               <div className="relative flex justify-center items-center">
-                <MetamaskIcon className="w-[700px] h-[70px] absolute" />
+                <MetamaskIcon className="w-[70px] h-[70px] absolute" />
                 <div className="animate-spin border border-r-slate-300 w-[140px] h-[140px] rounded-full"></div>
               </div>
-              {txHash && (
+              { txHash && (
                 <a
-                  href={TX_URL + txHash}
+                  href={env.EXPLORER_TX_BASE_URL + txHash}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xl underline hover:text-orange-500 mt-8 font-bold"
                 >
-                  See transaction
+                  View transaction on explorer
                 </a>
               )}
             </div>
@@ -184,12 +183,12 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
               </h2>
               <ErrorCircleIcon className="w-[100px] h-[100px]" />
               <a
-                href={TX_URL + txHash}
+                href={env.EXPLORER_TX_BASE_URL + txHash}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xl underline hover:text-orange-500 mt-8 font-bold"
               >
-                See transaction
+                View transaction on explorer
               </a>
             </div>
           )}
