@@ -19,26 +19,35 @@ This project is an open-source proof of concept implementing a (Meme) Token Laun
 
 ## Technologies Used
 
+- **OpenZeppelin Standards**: [OpenZeppelin](https://www.openzeppelin.com/)
+- **Ethers.js**: [Ethers.js Documentation](https://docs.ethers.org/v5/)
+
 ## Project Structure TODO
 
 ```
 ├── app
 │   ├── layout.tsx
-│   ├── page.tsx
-│   └── utils
-│       └── abi
+│   └── page.tsx
 ├── components
-│   ├── tabs
-│   │   ├── index.tsx
-│   │   ├── LastEtchTab.tsx
-│   │   └── MintTab.tsx
+│   ├── connectedWallet
+│   ├── deployToken
+│   ├── footer
+│   ├── icons
+│   ├── navbar
 │   └── ui
 ├── components
 ├── constants
 │   └── index.ts
-├── lib
-│   └── utils.ts
-├── package.json
+├── context
+│   └── AuthContext.tsx
+├── contracts
+│   ├── abi
+│   └── MemeTokenFactory.sol
+├── hooks.json
+│   ├── useConnectWallet.tsx
+│   └── useDeployERC20Token.tsx
+├── utils
+└── package.json
 ```
 
 ## Installation
@@ -55,27 +64,30 @@ To clone and run this project locally, follow these steps:
 2. **Install dependencies**:
 
    ```sh
-   yarn
+   npm install
    ```
 
 3. **Configure environment variables**:
    Create a `.env` file in the root directory and add necessary environment variables. Example:
 
    ```sh
-   RSK_PROVIDER_URL="https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID"
-   PRIVATE_KEY="your-private-key" TODO
+   NEXT_PUBLIC_FACTORY_ADDRESS=0xdBd55bbE2A8f5cEb213Ef0f1ea27446b86f9E554
+   NEXT_PUBLIC_TOKEN_CREATED_EVENT=TokenCreated
+   NEXT_PUBLIC_EXPLORER_TX_BASE_URL=https://explorer.testnet.rootstock.io/tx/
+   NEXT_PUBLIC_EXPLORER_ADDRESS_BASE_URL=https://explorer.testnet.rootstock.io/address/
    ```
 
 4. **Run the development server**:
 
    ```sh
-   yarn dev
+   npm run dev
    ```
 
 ## Usage
 
 1. **Access the application**: Open [http://localhost:3000](http://localhost:3000) in your browser.
-2. bla bla bla TODO
+2. **Connect your wallet**: Click on "Go to the app" and connect your wallet.
+3. **Complete the form and create your meme token**: Complete the form with the configuration for your meme token and click on "Deploy". Wait until the process finishes, then copy and save your contract address.
 
 ## Contributing
 
