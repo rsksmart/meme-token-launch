@@ -9,15 +9,25 @@ import { useAuth } from "@/context/AuthContext";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 import { HelpCircleIcon } from "@/components/icons";
 
+type FormData = {
+    name: string;
+    symbol: string;
+    initialSupply: string;
+    maxSupply: string;
+    strategy: DEPLOY_STRATEGY_ENUM;
+    image: File | null;
+};
+
 const DeployToken: React.FC = () => {
     const { isLoggedIn } = useAuth();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         name: "",
         symbol: "",
         initialSupply: "",
         maxSupply: "",
         strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
+        image: null,
     });
 
     const [isFormCompleted, setIsFormCompleted] = useState(false)
@@ -27,17 +37,32 @@ const DeployToken: React.FC = () => {
             if (key === "maxSupply" && formData.strategy === DEPLOY_STRATEGY_ENUM.INFLATIONARY) {
                 return false;
             }
+            if (key === "image") {
+                return !value;
+            }
             return value === "";
         });
     };
 
-    const handleChange = (e: { target: { name: any; value: any } }) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+    const handleChange = (e: { target: { name: any; value: any; files?: FileList } }) => {
+        const { name, value, files } = e.target;
 
+        if (name === "image" && files?.length) {
+            const file = files[0];
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    image: file,
+                }));
+            } else {
+                alert("Please select a PNG or JPG image.");
+            }
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
 
     useEffect(() => {
