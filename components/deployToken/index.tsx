@@ -1,24 +1,38 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
-import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM } from "@/constants";
+import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM, ROUTER } from "@/constants";
 import { useAuth } from "@/context/AuthContext";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 import { HelpCircleIcon } from "@/components/icons";
+import ArrowLeftIcon from "../icons/ArrowLeftIcon";
+import { useRouter } from "next/navigation";
+
+type FormData = {
+    name: string;
+    symbol: string;
+    initialSupply: string;
+    maxSupply: string;
+    strategy: DEPLOY_STRATEGY_ENUM;
+    image: File | null;
+};
 
 const DeployToken: React.FC = () => {
     const { isLoggedIn } = useAuth();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         name: "",
         symbol: "",
         initialSupply: "",
         maxSupply: "",
         strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
+        image: null as File | null,
     });
+
+    const router = useRouter();
 
     const [isFormCompleted, setIsFormCompleted] = useState(false)
 
@@ -27,17 +41,32 @@ const DeployToken: React.FC = () => {
             if (key === "maxSupply" && formData.strategy === DEPLOY_STRATEGY_ENUM.INFLATIONARY) {
                 return false;
             }
+            if (key === "image") {
+                return !value;
+            }
             return value === "";
         });
     };
 
-    const handleChange = (e: { target: { name: any; value: any } }) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value, files } = e.target as HTMLInputElement;
 
+        if (name === "image" && files && files.length > 0) {
+            const file = files[0];
+            if (file.type === "image/png" || file.type === "image/jpeg") {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    image: file,
+                }));
+            } else {
+                alert("Please select a PNG or JPG image.");
+            }
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
 
     useEffect(() => {
@@ -47,7 +76,13 @@ const DeployToken: React.FC = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Deploy</CardTitle>
+                <CardTitle className="flex flex-row justify-between items-center">
+                    <div>Deploy</div>
+                    <div className="cursor-pointer flex flex-row text-custom-green text-lg items-center gap-1" onClick={() => { router.push(ROUTER.MY_TOKENS) }}>
+                        <ArrowLeftIcon className="w-4 h-4" />
+                        Go back to my tokens
+                    </div>
+                </CardTitle>
                 <CardDescription>Deploy your meme token on Rootstock!</CardDescription>
             </CardHeader>
             <CardContent>
@@ -176,6 +211,29 @@ const DeployToken: React.FC = () => {
                         />
                     </div>
                 )}
+                <div className="mt-4">
+                    <div className="flex-row flex gap-2 items-center">
+                        <label htmlFor="image" className="">
+                            Memetoken logo
+                        </label>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <HelpCircleIcon className="w-4 h-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Select a PNG or JPG image for the ERC20 token.</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                    <input
+                        type="file"
+                        name="image"
+                        id="image"
+                        accept="image/png, image/jpeg"
+                        onChange={handleChange}
+                        className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                    />
+                </div>
             </CardContent>
             <CardFooter className="px-0 relative justify-end mb-6 mr-6">
                 {isLoggedIn ? (

@@ -23,6 +23,7 @@ const config = {
         'custom-pink': '#ff71e1',
         'custom-lime': '#deff1a',
         'custom-cyan': '#08ffd0',
+        'custom-orange': '#FF9100',
         title: 'hsl(var(--title))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

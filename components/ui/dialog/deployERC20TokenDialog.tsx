@@ -148,7 +148,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
               </div>
               <div className='ml-6'>
                 <ul className="list-disc">
-                  <li>Make sure that you've save a copy of the contract address. You could lost access to your tokens.</li>
+                  <li>{"Make sure that you've save a copy of the contract address. You could lost access to your tokens."}</li>
                 </ul>
               </div>
             </div>

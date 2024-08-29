@@ -7,14 +7,24 @@ import "@openzeppelin/contracts@5.0.2/access/Ownable.sol";
 
 contract DeflationaryToken is ERC20, Ownable {
     uint256 public maxSupply;
+    string public uri;
 
-    constructor(string memory _name, string memory _symbol, uint256 _initialSupply, uint256 _maxSupply, address _initialOwner)
+    constructor(string memory _name, string memory _symbol, uint256 _initialSupply, uint256 _maxSupply, address _initialOwner, string memory _uri)
         ERC20(_name, _symbol)
         Ownable(_initialOwner)
     {
         require(_initialSupply <= _maxSupply, "Initial supply cannot exceed max supply");
         maxSupply = _maxSupply;
+        uri = _uri;
         _mint(msg.sender, _initialSupply);
+    }
+
+    function setUri(string memory _uri) public onlyOwner{
+        uri = _uri;
+    } 
+
+    function getUri() public view returns (string memory) {
+        return uri;
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
@@ -24,11 +34,22 @@ contract DeflationaryToken is ERC20, Ownable {
 }
 
 contract InflationaryToken is ERC20, Ownable {
-    constructor(string memory _name, string memory _symbol, uint256 _initialSupply, address _initialOwner)
+    string public uri;
+
+    constructor(string memory _name, string memory _symbol, uint256 _initialSupply, address _initialOwner, string memory _uri)
         ERC20(_name, _symbol)
         Ownable(_initialOwner)
     {
+         uri = _uri;
         _mint(msg.sender, _initialSupply);
+    }
+
+    function setUri(string memory _uri) public onlyOwner{
+        uri = _uri;
+    } 
+
+    function getUri() public view returns (string memory) {
+        return uri;
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
@@ -38,16 +59,55 @@ contract InflationaryToken is ERC20, Ownable {
 
 contract MemeTokenFactory {
     event TokenCreated(address tokenAddress);
+
+    enum Strategy {
+        Inflationary,
+        Deflationary 
+    }
+
+    struct ContractInfo {
+        string name;
+        string symbol;
+        uint256 initialSupply;
+        uint256 maxSupply;
+        string uri;
+        Strategy strategy;
+    }
+
+    mapping(address => address[]) public ownerToTokens;
+    mapping(address => ContractInfo) public tokenToContractInfo;
    
-    function createInflationaryToken(string memory name, string memory symbol, uint256 initialSupply, address initialOwner) public {
-        InflationaryToken newToken = new InflationaryToken(name, symbol, initialSupply, initialOwner);
+    function createInflationaryToken(string memory name, string memory symbol, uint256 initialSupply, address initialOwner, string memory uri) public {
+        InflationaryToken newToken = new InflationaryToken(name, symbol, initialSupply, initialOwner, uri);
         
+        ownerToTokens[initialOwner].push(address(newToken));
+        tokenToContractInfo[address(newToken)] = ContractInfo({
+            name: name,
+            symbol: symbol,
+            initialSupply: initialSupply,
+            maxSupply: 0,
+            uri: uri,
+            strategy: Strategy.Inflationary
+        });
         emit TokenCreated(address(newToken));
     }
 
-     function createDeflationaryToken(string memory name, string memory symbol, uint256 initialSupply, uint256 maxSupply, address initialOwner) public {
-        DeflationaryToken newToken = new DeflationaryToken(name, symbol, initialSupply, maxSupply, initialOwner);
+    function createDeflationaryToken(string memory name, string memory symbol, uint256 initialSupply, uint256 maxSupply, address initialOwner, string memory uri) public {
+        DeflationaryToken newToken = new DeflationaryToken(name, symbol, initialSupply, maxSupply, initialOwner, uri);
         
+        ownerToTokens[initialOwner].push(address(newToken));
+        tokenToContractInfo[address(newToken)] = ContractInfo({
+            name: name,
+            symbol: symbol,
+            initialSupply: initialSupply,
+            maxSupply: maxSupply,
+            uri: uri,
+            strategy: Strategy.Deflationary
+        });
         emit TokenCreated(address(newToken));
+    }
+
+    function getTokensForOwner(address owner) public view returns (address[] memory) {
+        return ownerToTokens[owner];
     }
 }
