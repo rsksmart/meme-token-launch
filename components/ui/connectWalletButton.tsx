@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 type Props = {
   title?: string
   className?: string
+  route?: string
 }
 
 const variants = cva(
@@ -18,7 +19,7 @@ const variants = cva(
 );
 
 
-const ConnectWalletButton = ({ title = 'Connect wallet', className }: Props) => {
+const ConnectWalletButton = ({ title = 'Connect wallet', className, route }: Props) => {
   const [dialog, setDialog] = useState<boolean>(false)
 
   return (
@@ -27,6 +28,7 @@ const ConnectWalletButton = ({ title = 'Connect wallet', className }: Props) => 
         <ConnectWalletDialog
           closeDialog={() => setDialog(false)}
           open={dialog}
+          route={route}
         />
       )}
       <Button

@@ -10,9 +10,10 @@ import { ROUTER } from '@/constants'
 type props = {
   closeDialog: Function
   open: boolean
+  route?: string
 }
 
-function ConnectWalletDialog({ closeDialog, open }: props) {
+function ConnectWalletDialog({ closeDialog, open, route }: props) {
   const { login, provider, isError, setIsError } = useConnectWallet()
   const { isLoggedIn, login: authLogin } = useAuth()
 
@@ -22,7 +23,9 @@ function ConnectWalletDialog({ closeDialog, open }: props) {
     init()
     if (isLoggedIn) {
       authLogin(provider!)
-      router.push(ROUTER.DEPLOY_TOKEN)
+      if(route) {
+        router.push(route)
+      }
       closeDialog()
       setIsError(false)
     }

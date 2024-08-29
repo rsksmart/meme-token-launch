@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
-import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM } from "@/constants";
+import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM, ROUTER } from "@/constants";
 import { useAuth } from "@/context/AuthContext";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 import { HelpCircleIcon } from "@/components/icons";
+import ArrowLeftIcon from "../icons/ArrowLeftIcon";
+import { useRouter } from "next/navigation";
 
 const DeployToken: React.FC = () => {
     const { isLoggedIn } = useAuth();
@@ -19,6 +21,8 @@ const DeployToken: React.FC = () => {
         maxSupply: "",
         strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
     });
+
+    const router = useRouter();
 
     const [isFormCompleted, setIsFormCompleted] = useState(false)
 
@@ -47,7 +51,13 @@ const DeployToken: React.FC = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Deploy</CardTitle>
+                <CardTitle className="flex flex-row justify-between items-center">
+                    <div>Deploy</div>
+                    <div className="cursor-pointer flex flex-row text-custom-green text-lg items-center gap-1" onClick={() => { router.push(ROUTER.MY_TOKENS) }}>
+                        <ArrowLeftIcon className="w-4 h-4" />
+                        Go back to my tokens
+                    </div>
+                </CardTitle>
                 <CardDescription>Deploy your meme token on Rootstock!</CardDescription>
             </CardHeader>
             <CardContent>
