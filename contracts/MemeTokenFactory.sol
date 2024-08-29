@@ -59,16 +59,55 @@ contract InflationaryToken is ERC20, Ownable {
 
 contract MemeTokenFactory {
     event TokenCreated(address tokenAddress);
+
+    enum Strategy {
+        Inflationary,
+        Deflationary 
+    }
+
+    struct ContractInfo {
+        string name;
+        string symbol;
+        uint256 initialSupply;
+        uint256 maxSupply;
+        string uri;
+        Strategy strategy;
+    }
+
+    mapping(address => address[]) public ownerToTokens;
+    mapping(address => ContractInfo) public tokenToContractInfo;
    
     function createInflationaryToken(string memory name, string memory symbol, uint256 initialSupply, address initialOwner, string memory uri) public {
         InflationaryToken newToken = new InflationaryToken(name, symbol, initialSupply, initialOwner, uri);
         
+        ownerToTokens[initialOwner].push(address(newToken));
+        tokenToContractInfo[address(newToken)] = ContractInfo({
+            name: name,
+            symbol: symbol,
+            initialSupply: initialSupply,
+            maxSupply: 0,
+            uri: uri,
+            strategy: Strategy.Inflationary
+        });
         emit TokenCreated(address(newToken));
     }
 
-     function createDeflationaryToken(string memory name, string memory symbol, uint256 initialSupply, uint256 maxSupply, address initialOwner, string memory uri) public {
+    function createDeflationaryToken(string memory name, string memory symbol, uint256 initialSupply, uint256 maxSupply, address initialOwner, string memory uri) public {
         DeflationaryToken newToken = new DeflationaryToken(name, symbol, initialSupply, maxSupply, initialOwner, uri);
         
+        ownerToTokens[initialOwner].push(address(newToken));
+        tokenToContractInfo[address(newToken)] = ContractInfo({
+            name: name,
+            symbol: symbol,
+            initialSupply: initialSupply,
+            maxSupply: maxSupply,
+            uri: uri,
+            strategy: Strategy.Deflationary
+        });
         emit TokenCreated(address(newToken));
+    }
+
+    function getTokensForOwner(address owner) public view returns (address[] memory) {
+        return ownerToTokens[owner];
     }
 }

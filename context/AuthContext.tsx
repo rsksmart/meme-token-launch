@@ -1,5 +1,5 @@
 'use client'
-import { ROUTER } from '@/constants';
+import { ContractInfo, ROUTER, Token } from '@/constants';
 import { ethers, Signer } from 'ethers';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useContext, createContext, ReactNode, useCallback, useEffect, Dispatch, SetStateAction } from 'react';
@@ -16,12 +16,14 @@ interface AuthContextType {
     provider: ethers.BrowserProvider | undefined;
     address: string;
     signer: Signer | undefined;
+    tokens: Token[];
     env: EnvironmentVariables;
     login: (provider: ethers.BrowserProvider) => void;
     logout: () => void;
     setAddress: React.Dispatch<React.SetStateAction<string>>;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-    setSigner: Dispatch<SetStateAction<ethers.Signer | undefined>>
+    setSigner: Dispatch<SetStateAction<ethers.Signer | undefined>>;
+    setTokens: Dispatch<SetStateAction<Token[]>>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -51,6 +53,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [address, setAddress] = useState<string>('')
     const [signer, setSigner] = useState<Signer | undefined>()
+    const [tokens, setTokens] = useState<Token[]>([])
     const [provider, setProvider] = useState<ethers.BrowserProvider | undefined>(
         undefined
     )
@@ -63,6 +66,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const logout = useCallback(() => {
         setProvider(undefined)
         setIsLoggedIn(false)
+        setTokens([])
         setAddress('')
     }, [])
 
@@ -80,11 +84,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
                 address,
                 signer,
                 env,
+                tokens,
                 login,
                 logout,
                 setAddress,
                 setSigner,
                 setIsLoggedIn,
+                setTokens
             }
             }
         >

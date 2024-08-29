@@ -9,6 +9,25 @@ export interface AccountData {
     network?: string;
 }
 
+export interface ContractInfo {
+    name: string;
+    symbol: string;
+    initialSupply: number;
+    maxSupply: number;
+    uri: string;
+    strategy: number;
+}
+
+export interface Token {
+    name: string
+    symbol: string
+    address: string
+    strategy: DEPLOY_STRATEGY_ENUM
+    initialSupply: number;
+    maxSupply: number;
+    uri: string;
+}
+
 
 export const ROUTER = {
     INDEX: '/',

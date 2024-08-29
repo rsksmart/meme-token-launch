@@ -21,7 +21,7 @@ const useDeployERC20Token = () => {
   const {FACTORY_ADDRESS, TOKEN_CREATED_EVENT} = env;
 
   const [isError, setIsError] = useState(false)
-  
+
   const [txHash, setTxHash] = useState()
   const [contractAddress, setContractAddress] = useState()
 
@@ -29,13 +29,13 @@ const useDeployERC20Token = () => {
 
   const deployInflationaryToken = ({ name, symbol, initialSupply }: DeployERC20Params) => {
     const _initialSupply = ethers.parseUnits(initialSupply, 18); 
-    return factory.createInflationaryToken(name, symbol, _initialSupply, signerAddress)
+    return factory.createInflationaryToken(name, symbol, _initialSupply, signerAddress, "")
   }
 
   const deployDeflationaryToken = ({ name, symbol, initialSupply, maxSupply }: DeployERC20Params) => {
     const _initialSupply = ethers.parseUnits(initialSupply, 18); 
     const _maxSupply = ethers.parseUnits(maxSupply, 18);
-    return factory.createDeflationaryToken(name, symbol, _initialSupply, _maxSupply, signerAddress)
+    return factory.createDeflationaryToken(name, symbol, _initialSupply, _maxSupply, signerAddress, "")
   }
 
   const getContractAddress = async (tx: { hash: any; wait: () => any; }) => {
