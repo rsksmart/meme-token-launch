@@ -66,7 +66,8 @@ const useDeployERC20Token = () => {
       maxSupply,
       initialSupply
     }
-
+    console.log('strategy is', strategy);
+    
     const tx = await strategyToFunctionMapper[strategy](params)
     setTxHash(tx.hash)
 

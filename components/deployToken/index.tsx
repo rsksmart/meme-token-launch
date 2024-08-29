@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
@@ -27,7 +27,7 @@ const DeployToken: React.FC = () => {
         initialSupply: "",
         maxSupply: "",
         strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
-        image: null,
+        image: null as File | null,
     });
 
     const [isFormCompleted, setIsFormCompleted] = useState(false)
@@ -44,10 +44,10 @@ const DeployToken: React.FC = () => {
         });
     };
 
-    const handleChange = (e: { target: { name: any; value: any; files?: FileList } }) => {
-        const { name, value, files } = e.target;
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value, files } = e.target as HTMLInputElement;
 
-        if (name === "image" && files?.length) {
+        if (name === "image" && files && files.length > 0) {
             const file = files[0];
             if (file.type === "image/png" || file.type === "image/jpeg") {
                 setFormData((prevData) => ({
@@ -201,6 +201,29 @@ const DeployToken: React.FC = () => {
                         />
                     </div>
                 )}
+                <div className="mt-4">
+                    <div className="flex-row flex gap-2 items-center">
+                        <label htmlFor="image" className="">
+                            Memetoken logo
+                        </label>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <HelpCircleIcon className="w-4 h-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Select a PNG or JPG image for the ERC20 token.</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                    <input
+                        type="file"
+                        name="image"
+                        id="image"
+                        accept="image/png, image/jpeg"
+                        onChange={handleChange}
+                        className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                    />
+                </div>
             </CardContent>
             <CardFooter className="px-0 relative justify-end mb-6 mr-6">
                 {isLoggedIn ? (
