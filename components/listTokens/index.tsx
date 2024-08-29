@@ -1,5 +1,5 @@
 'use client'
-
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip"
 import { useAuth } from "@/context/AuthContext";
@@ -38,7 +38,6 @@ const ListTokens: React.FC = () => {
             }, 1000);
         });
     };
-
     return (
         <>
             {tokens.length === 0 ? (
@@ -49,6 +48,7 @@ const ListTokens: React.FC = () => {
                 <table className="min-w-full bg-background border-b border-border rounded-lg shadow-md">
                     <thead className="bg-border">
                         <tr>
+                            <th className="py-3 px-4 text-left font-semibold">Logo</th>
                             <th className="py-3 px-4 text-left font-semibold">Name</th>
                             <th className="py-3 px-4 text-center font-semibold">Symbol</th>
                             <th className="py-3 px-4 text-center font-semibold">Address</th>
@@ -59,6 +59,20 @@ const ListTokens: React.FC = () => {
                     <tbody>
                         {tokens.map((token, index) => (
                             <tr key={index} className="border-b hover:bg-card hover:text-custom-pink transition-colors">
+                                <td className="py-3 px-4">
+                                    {token.uri ? (
+                                        <img
+                                            src={`${process.env.NEXT_PUBLIC_PINATA_URL}${token.uri}`}
+                                            alt={`${token.name} logo`}
+                                            className="w-12 h-12 object-cover rounded-full"
+                                        />
+                                    ) : (
+                                        <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                                            <span className="text-sm">N/A</span>
+                                        </div>
+                                    )}
+                                </td>
+
                                 <td className="py-3 px-4">{token.name}</td>
                                 <td className="py-3 px-4 text-center">{token.symbol}</td>
                                 <td className="py-3 px-4 my-3 flex justify-center items-center gap-3">
