@@ -3,6 +3,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
+import { ROUTER } from "@/constants";
 
 export default function Home() {
   return (
@@ -30,7 +31,7 @@ export default function Home() {
             Go to the app
           </h1>
           <div className="flex items-center">
-            <ConnectWalletButton className="mt-3" />
+            <ConnectWalletButton className="mt-3" route={ROUTER.MY_TOKENS}/>
           </div>
         </div>
 
