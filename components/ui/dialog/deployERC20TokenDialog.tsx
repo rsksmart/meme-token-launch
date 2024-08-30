@@ -10,9 +10,10 @@ type props = {
   closeDialog: Function
   open: boolean
   params: DeployERC20Props
+  gasless: boolean
 }
 
-function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
+function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
   const { env } = useAuth();
   const { deployERC20, isError, setIsError, contractAddress, txHash } = useDeployERC20Token();
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
@@ -54,7 +55,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
     setIsError(false)
     try {
       setTimeout(() => {
-        deployERC20(params)
+        deployERC20(params, gasless)
       }, 1500)
     } catch (error: any) {
       setIsError(true)

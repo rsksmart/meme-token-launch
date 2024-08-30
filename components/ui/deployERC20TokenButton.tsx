@@ -8,9 +8,10 @@ import { DeployERC20Props } from '@/hooks/useDeployERC20Token'
 type Props = {
   disabled: boolean
   params: DeployERC20Props
+  gasless: boolean
 }
 
-const DeployERC20TokenButton = ({disabled, params}: Props) => {
+const DeployERC20TokenButton = ({disabled, params, gasless}: Props) => {
   const [dialog, setDialog] = useState<boolean>(false)
 
   return (
@@ -20,6 +21,7 @@ const DeployERC20TokenButton = ({disabled, params}: Props) => {
           closeDialog={() => setDialog(false)}
           open={dialog}
           params={params}
+          gasless={gasless}
         />
       )}
       <Button

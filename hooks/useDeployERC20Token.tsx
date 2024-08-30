@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import MemeTokenFactoryAbi from "@/contracts/abi/MemeTokenFactory";
 import { DEPLOY_STRATEGY_ENUM } from "@/constants";
 import { UploadImageIpfs } from "@/utils/PinataService";
+import { sponsoredCall } from "@/utils/SponsoredCall";
 
 type DeployERC20Params = {
   name: string;
@@ -29,29 +30,96 @@ const useDeployERC20Token = () => {
 
   const factory = new ethers.Contract(FACTORY_ADDRESS, MemeTokenFactoryAbi, signer);
 
-  const deployInflationaryToken = ({ name, symbol, initialSupply }: DeployERC20Params, cid : string) => {
-    const _initialSupply = ethers.parseUnits(initialSupply, 18); 
-    return factory.createInflationaryToken(name, symbol, _initialSupply, signerAddress, cid)
+  const deployInflationaryToken = async (
+    { name, symbol, initialSupply }: DeployERC20Params,
+    cid: string,
+    gasless: boolean
+  ) => {
+    try {
+      const _initialSupply = ethers.parseUnits(initialSupply, 18)
+      if (gasless) {
+        const txReceipt = await sponsoredCall(
+          factory,
+          'createInflationaryToken',
+          [name, symbol, _initialSupply, signerAddress, cid],
+          FACTORY_ADDRESS
+        )
+        return txReceipt
+      } else {
+        return factory.createInflationaryToken(
+          name,
+          symbol,
+          _initialSupply,
+          signerAddress,
+          cid
+        )
+      }
+    } catch (error) {
+      console.log('Error deploying inflationary token:', error)
+    }
   }
 
-  const deployDeflationaryToken = ({ name, symbol, initialSupply, maxSupply }: DeployERC20Params, cid: string) => {
-    const _initialSupply = ethers.parseUnits(initialSupply, 18); 
-    const _maxSupply = ethers.parseUnits(maxSupply, 18);
-    return factory.createDeflationaryToken(name, symbol, _initialSupply, _maxSupply, signerAddress, cid)
+  const deployDeflationaryToken = async (
+    { name, symbol, initialSupply, maxSupply }: DeployERC20Params,
+    cid: string,
+    gasless: boolean
+  ) => {
+    try {
+      const _initialSupply = ethers.parseUnits(initialSupply, 18)
+      const _maxSupply = ethers.parseUnits(maxSupply, 18)
+      if (gasless) {
+        const txReceipt = await sponsoredCall(
+          factory,
+          'createDeflationaryToken',
+          [name, symbol, _initialSupply, _maxSupply, signerAddress, cid],
+          FACTORY_ADDRESS
+        )
+        return txReceipt
+      } else {
+        return factory.createDeflationaryToken(
+          name,
+          symbol,
+          _initialSupply,
+          _maxSupply,
+          signerAddress,
+          cid
+        )
+      }
+    } catch (error) {
+      console.log('Error deploying deflationary token:', error)
+    }
   }
 
-  const getContractAddress = async (tx: { hash: any; wait: () => any; }) => {
-    const receipt = await tx.wait();
-
-    for (const log of receipt.logs) {
-      try {
-        const parsedLog = factory.interface.parseLog(log);
-        if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
-          const { tokenAddress } = parsedLog.args;
-          return tokenAddress
+  const getContractAddress = async (tx: { hash: any; wait: () => any; logs?:any[]}, gasless: boolean) => {
+    if(gasless) {
+      if(!tx.logs) {
+        console.log('No logs found in tx');
+        return
+      }
+      for (const log of tx.logs) {
+        try {
+          const parsedLog = factory.interface.parseLog(log);
+          if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
+            const { tokenAddress } = parsedLog.args;
+            return tokenAddress
+          }
+        } catch (error) {
+          console.error("Failed to parse log:", error);
         }
-      } catch (error) {
-        console.error("Failed to parse log:", error);
+      }
+    } else {
+      const receipt = await tx.wait();
+  
+      for (const log of receipt.logs) {
+        try {
+          const parsedLog = factory.interface.parseLog(log);
+          if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
+            const { tokenAddress } = parsedLog.args;
+            return tokenAddress
+          }
+        } catch (error) {
+          console.error("Failed to parse log:", error);
+        }
       }
     }
   }
@@ -61,7 +129,7 @@ const useDeployERC20Token = () => {
     [DEPLOY_STRATEGY_ENUM.INFLATIONARY]: deployInflationaryToken
   }
 
-  const deployERC20 = useCallback(async ({ name, symbol, maxSupply, initialSupply, strategy, image }: DeployERC20Props) => {
+  const deployERC20 = useCallback(async ({ name, symbol, maxSupply, initialSupply, strategy, image }: DeployERC20Props, gasless: boolean) => {
     const params: DeployERC20Params = {
       name,
       symbol,
@@ -69,20 +137,15 @@ const useDeployERC20Token = () => {
       initialSupply,
       image
     }
-    console.log('strategy is', strategy);
-    console.log('image exists?', !!image);
-    
     const cid = await UploadImageIpfs(image)
     if(cid) {
-      const tx = await strategyToFunctionMapper[strategy](params, cid)
-      setTxHash(tx.hash)
-      const contractAddress = await getContractAddress(tx)
+      const tx = await strategyToFunctionMapper[strategy](params, cid, gasless)
+      setTxHash(gasless ?  tx.transactionHash : tx.hash)
+      const contractAddress = await getContractAddress(tx, gasless)
       setContractAddress(contractAddress);
     } else {
-      console.log('Error uploading image to IPFS');
       setIsError(true)
     }
-
   }, [])
 
   return {

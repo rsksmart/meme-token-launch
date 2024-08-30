@@ -22,7 +22,7 @@ type FormData = {
 
 const DeployToken: React.FC = () => {
     const { isLoggedIn } = useAuth();
-
+    const [gasless, setGasless] = useState(true);
     const [formData, setFormData] = useState<FormData>({
         name: "",
         symbol: "",
@@ -234,10 +234,31 @@ const DeployToken: React.FC = () => {
                         className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                     />
                 </div>
+                
             </CardContent>
             <CardFooter className="px-0 relative justify-end mb-6 mr-6">
+                <div className="mr-10">
+                    <label htmlFor="">Gasless</label>
+                    <Tooltip>
+                            <TooltipTrigger>
+                                <HelpCircleIcon className="w-4 h-4" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Active this option if you dont have enough rBTC.</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    <label className="flex relative items-center cursor-pointer">
+                    <input
+                        checked={gasless}
+                        type="checkbox"
+                        className="sr-only"
+                        onChange={(e) => setGasless(Boolean(e.target.checked))}
+                    />
+                    <span className="w-11 h-6 bg-card rounded-full border border-input toggle-bg"></span>
+                    </label>
+                </div>
                 {isLoggedIn ? (
-                    <DeployERC20TokenButton disabled={!isFormCompleted} params={formData} />
+                    <DeployERC20TokenButton disabled={!isFormCompleted} params={formData} gasless={gasless}/>
                 ) : (
 
                     <ConnectWalletButton title="Connect wallet to deploy" />

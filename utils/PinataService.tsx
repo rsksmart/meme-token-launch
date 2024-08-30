@@ -6,7 +6,6 @@ export async function UploadImageIpfs(image: File) {
       console.log('No image provided')
       return null
     }
-    console.log('Uploading image to IPFS...');
     const data = new FormData()
     data.append('file', image)
 
@@ -21,7 +20,6 @@ export async function UploadImageIpfs(image: File) {
         },
       }
     )
-    console.log('IPFS Hash:', response.data.IpfsHash)
     return response.data.IpfsHash
   } catch (error) {
     console.log('Error uploading image is: ', error)
