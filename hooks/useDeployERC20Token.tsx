@@ -134,6 +134,8 @@ const useDeployERC20Token = () => {
       initialSupply,
       cid
     }
+    console.log('params for the token are :', params);
+    
     const tx = await strategyToFunctionMapper[strategy](params, gasless)
     setTxHash(gasless ?  tx.transactionHash : tx.hash)
     const contractAddress = await getContractAddress(tx, gasless)

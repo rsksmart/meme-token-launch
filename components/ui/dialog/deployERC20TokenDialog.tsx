@@ -54,10 +54,14 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
   }, [contractAddress])
 
   const deployFormDataToProps = async ({image, strategy, name, symbol, maxSupply, initialSupply}: DeployFormData) => {
-    var cid  = "";
+    console.log('deployformdatatoprops process running');
+    
+    let cid  = "";
 
     if(image) {
-      const cid = await UploadImageIpfs(image)
+      cid = await UploadImageIpfs(image)
+      console.log('cid is ', cid);
+      
       if(!cid) {
         console.log('Error uploading image to IPFS');
         setIsError(true)
@@ -79,6 +83,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
     try {
       setTimeout(async () => {
         const props = await deployFormDataToProps(params)
+        console.log('Deploying contract with props: ', props);
         deployERC20(props, gasless)
       }, 1500)
     } catch (error: any) {
