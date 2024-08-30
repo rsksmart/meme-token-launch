@@ -11,10 +11,11 @@ import { UploadImageIpfs } from '@/utils/PinataService'
 type props = {
   closeDialog: Function
   open: boolean
+  gasless: boolean
   params: DeployFormData
 }
 
-function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
+function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
   const { env } = useAuth();
   const { deployERC20, isError, setIsError, contractAddress, txHash } = useDeployERC20Token();
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
@@ -53,10 +54,14 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
   }, [contractAddress])
 
   const deployFormDataToProps = async ({image, strategy, name, symbol, maxSupply, initialSupply}: DeployFormData) => {
-    var cid  = "";
+    console.log('deployformdatatoprops process running');
+    
+    let cid  = "";
 
     if(image) {
-      const cid = await UploadImageIpfs(image)
+      cid = await UploadImageIpfs(image)
+      console.log('cid is ', cid);
+      
       if(!cid) {
         console.log('Error uploading image to IPFS');
         setIsError(true)
@@ -78,7 +83,8 @@ function DeployERC20TokenDialog({ closeDialog, open, params }: props) {
     try {
       setTimeout(async () => {
         const props = await deployFormDataToProps(params)
-        deployERC20(props)
+        console.log('Deploying contract with props: ', props);
+        deployERC20(props, gasless)
       }, 1500)
     } catch (error: any) {
       setIsError(true)
