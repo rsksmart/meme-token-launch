@@ -17,7 +17,6 @@ export type DeployERC20Props = DeployERC20Params & {
   strategy: DEPLOY_STRATEGY_ENUM;
 }
 
-
 const useDeployERC20Token = () => {
   const { signer, address: signerAddress, env } = useAuth();
   const { FACTORY_ADDRESS, TOKEN_CREATED_EVENT } = env;
