@@ -19,15 +19,6 @@ const useConnectWallet = () => {
     [DEPLOY_STRATEGY_ENUM.INFLATIONARY]: InflationaryTokenAbi
   }
 
-  // const format = (number: bigint) =>{
-  //   const adjustedSupply = number / (10n ** 18n); // Adjust for 18 decimals
-  //   const adjustedSupplyString = adjustedSupply.toString(); // Convert to string for display
-
-  //   // Optional: Format the string with commas for readability
-  //   const formattedSupply = new Intl.NumberFormat().format(Number(adjustedSupplyString));
-
-  // }
-
   const populateTokensListFromOwner = async (signer: Signer, address: string) => {
     const factory = new ethers.Contract(FACTORY_ADDRESS, MemeTokenFactoryAbi, signer);
     const tokenAddresses: string[] = await factory.getTokensForOwner(address);
@@ -51,7 +42,7 @@ const useConnectWallet = () => {
           uri: contractInfo.uri,
           strategy
         }
-        
+
         _tokens.push(token)
       })
     )
