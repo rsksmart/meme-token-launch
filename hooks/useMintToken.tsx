@@ -32,7 +32,7 @@ const useMintToken = () => {
     try {
       const contract = new ethers.Contract(contractAddress, getABIByStrategy(strategy), signer);
 
-      const tx = await contract.mint(addressTo, amount);
+      const tx = await contract.mint(addressTo, ethers.parseUnits(amount, 18));
 
       setTxHash(tx.hash)
 

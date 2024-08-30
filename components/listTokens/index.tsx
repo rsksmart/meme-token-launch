@@ -52,6 +52,7 @@ const ListTokens: React.FC = () => {
                             <th className="py-3 px-4 text-left font-semibold">Name</th>
                             <th className="py-3 px-4 text-center font-semibold">Symbol</th>
                             <th className="py-3 px-4 text-center font-semibold">Address</th>
+                            <th className="py-3 px-4 text-center font-semibold">Current supply</th>
                             <th className="py-3 px-4 text-center font-semibold">Strategy</th>
                             <th className="py-3 px-4 text-center font-semibold">Action</th>
                         </tr>
@@ -104,6 +105,7 @@ const ListTokens: React.FC = () => {
                                         </TooltipTrigger>
                                     </Tooltip>
                                 </td>
+                                <td className="py-3 px-4 text-center">{token.currentSupply}</td>
                                 <td className=" text-center">
                                     <div className={(token.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY ? "bg-custom-cyan" : "bg-custom-orange") + " font-bold text-background py-1 rounded-full"}>
                                         {token.strategy}

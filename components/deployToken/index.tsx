@@ -11,7 +11,7 @@ import { HelpCircleIcon } from "@/components/icons";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 import { useRouter } from "next/navigation";
 
-type FormData = {
+export type DeployFormData = {
     name: string;
     symbol: string;
     initialSupply: string;
@@ -23,7 +23,8 @@ type FormData = {
 const DeployToken: React.FC = () => {
     const { isLoggedIn } = useAuth();
     const [gasless, setGasless] = useState(true);
-    const [formData, setFormData] = useState<FormData>({
+    
+    const [formData, setFormData] = useState<DeployFormData>({
         name: "",
         symbol: "",
         initialSupply: "",

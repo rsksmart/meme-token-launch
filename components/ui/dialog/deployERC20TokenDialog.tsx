@@ -5,12 +5,14 @@ import useDeployERC20Token, { DeployERC20Props } from '@/hooks/useDeployERC20Tok
 import { copyToClipboard, formatAddress } from '@/lib/utils'
 import { Tooltip, TooltipTrigger } from '../tooltip'
 import { useAuth } from '@/context/AuthContext'
+import { DeployFormData } from '@/components/deployToken'
+import { UploadImageIpfs } from '@/utils/PinataService'
 
 type props = {
   closeDialog: Function
   open: boolean
-  params: DeployERC20Props
   gasless: boolean
+  params: DeployFormData
 }
 
 function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
@@ -51,11 +53,33 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
     }
   }, [contractAddress])
 
+  const deployFormDataToProps = async ({image, strategy, name, symbol, maxSupply, initialSupply}: DeployFormData) => {
+    var cid  = "";
+
+    if(image) {
+      const cid = await UploadImageIpfs(image)
+      if(!cid) {
+        console.log('Error uploading image to IPFS');
+        setIsError(true)
+      }
+    }
+
+    return {
+      strategy,
+      name,
+      symbol,
+      maxSupply,
+      initialSupply,
+      cid
+    } as DeployERC20Props
+  }
+
   const init = () => {
     setIsError(false)
     try {
-      setTimeout(() => {
-        deployERC20(params, gasless)
+      setTimeout(async () => {
+        const props = await deployFormDataToProps(params)
+        deployERC20(props, gasless)
       }, 1500)
     } catch (error: any) {
       setIsError(true)
