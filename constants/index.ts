@@ -12,8 +12,8 @@ export interface AccountData {
 export interface ContractInfo {
     name: string;
     symbol: string;
-    initialSupply: number;
-    maxSupply: number;
+    initialSupply: bigint;
+    maxSupply: bigint;
     uri: string;
     strategy: number;
 }
@@ -23,8 +23,9 @@ export interface Token {
     symbol: string
     address: string
     strategy: DEPLOY_STRATEGY_ENUM
-    initialSupply: number;
-    maxSupply: number;
+    initialSupply: string;
+    currentSupply: string;
+    maxSupply: string;
     uri: string;
 }
 

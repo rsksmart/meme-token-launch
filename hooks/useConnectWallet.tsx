@@ -3,6 +3,8 @@ import { ethers, Signer } from 'ethers'
 import { useAuth } from '@/context/AuthContext'
 import MemeTokenFactoryAbi from '@/contracts/abi/MemeTokenFactory'
 import { ContractInfo, DEPLOY_STRATEGY_ENUM, Token } from '@/constants'
+import DeflationaryTokenAbi from '@/contracts/abi/DeflationaryToken'
+import InflationaryTokenAbi from '@/contracts/abi/InflationaryToken'
 
 const useConnectWallet = () => {
   const { setAddress, setIsLoggedIn, setSigner, setTokens, tokens, env: { FACTORY_ADDRESS } } = useAuth()
@@ -11,6 +13,20 @@ const useConnectWallet = () => {
   const [provider, setProvider] = useState<
     ethers.BrowserProvider | undefined
   >()
+
+  const strategyToTokenABI = {
+    [DEPLOY_STRATEGY_ENUM.DEFLATIONARY]: DeflationaryTokenAbi,
+    [DEPLOY_STRATEGY_ENUM.INFLATIONARY]: InflationaryTokenAbi
+  }
+
+  // const format = (number: bigint) =>{
+  //   const adjustedSupply = number / (10n ** 18n); // Adjust for 18 decimals
+  //   const adjustedSupplyString = adjustedSupply.toString(); // Convert to string for display
+
+  //   // Optional: Format the string with commas for readability
+  //   const formattedSupply = new Intl.NumberFormat().format(Number(adjustedSupplyString));
+
+  // }
 
   const populateTokensListFromOwner = async (signer: Signer, address: string) => {
     const factory = new ethers.Contract(FACTORY_ADDRESS, MemeTokenFactoryAbi, signer);
@@ -21,18 +37,24 @@ const useConnectWallet = () => {
     await Promise.all(
       tokenAddresses.map(async (tokenAddress) => {
         const contractInfo: ContractInfo = await factory.tokenToContractInfo(tokenAddress)
-        console.log(contractInfo.strategy )
+        const strategy = contractInfo.strategy == 0 ? DEPLOY_STRATEGY_ENUM.INFLATIONARY : DEPLOY_STRATEGY_ENUM.DEFLATIONARY
+        const tokenContract = new ethers.Contract(tokenAddress, strategyToTokenABI[strategy], signer);
+        const currentSupply = await tokenContract.totalSupply();
+
         const token: Token = {
           name: contractInfo.name,
           address: tokenAddress,
           symbol: contractInfo.symbol,
-          initialSupply: contractInfo.initialSupply,
-          maxSupply: contractInfo.maxSupply,
+          initialSupply: ethers.formatEther(contractInfo.initialSupply),
+          currentSupply: ethers.formatEther(currentSupply),
+          maxSupply: ethers.formatEther(contractInfo.maxSupply),
           uri: contractInfo.uri,
-          strategy: contractInfo.strategy == 0 ? DEPLOY_STRATEGY_ENUM.INFLATIONARY : DEPLOY_STRATEGY_ENUM.DEFLATIONARY
+          strategy
         }
+        
         _tokens.push(token)
-      }))
+      })
+    )
 
     setTokens([..._tokens])
   }

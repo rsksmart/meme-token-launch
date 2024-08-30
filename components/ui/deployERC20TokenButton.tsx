@@ -3,11 +3,11 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import DeployERC20TokenDialog from '@/components/ui/dialog/deployERC20TokenDialog'
-import { DeployERC20Props } from '@/hooks/useDeployERC20Token'
+import { DeployFormData } from '@/components/deployToken'
 
 type Props = {
   disabled: boolean
-  params: DeployERC20Props
+  params: DeployFormData
 }
 
 const DeployERC20TokenButton = ({disabled, params}: Props) => {
