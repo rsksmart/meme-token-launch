@@ -123,7 +123,7 @@ const DeployToken: React.FC = () => {
                                     <HelpCircleIcon className="w-4 h-4" />
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>Active this option if you don't have enough rBTC.</p>
+                                    <p>{"Active this option if you don\'t have enough rBTC."}</p>
                                 </TooltipContent>
                             </Tooltip>
 
