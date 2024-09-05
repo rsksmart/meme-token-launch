@@ -16,7 +16,7 @@ contract DeflationaryToken is ERC20, Ownable {
         require(_initialSupply <= _maxSupply, "Initial supply cannot exceed max supply");
         maxSupply = _maxSupply;
         uri = _uri;
-        _mint(msg.sender, _initialSupply);
+        _mint(_initialOwner, _initialSupply);
     }
 
     function setUri(string memory _uri) public onlyOwner{
@@ -41,7 +41,7 @@ contract InflationaryToken is ERC20, Ownable {
         Ownable(_initialOwner)
     {
          uri = _uri;
-        _mint(msg.sender, _initialSupply);
+        _mint(_initialOwner, _initialSupply);
     }
 
     function setUri(string memory _uri) public onlyOwner{
