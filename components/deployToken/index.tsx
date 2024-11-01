@@ -3,7 +3,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import DeployERC20TokenButton from "@/components/ui/deployERC20TokenButton";
+import DeployTokenButton from "@/components/ui/deployTokenButton";
 import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM, ROUTER } from "@/constants";
 import { useAuth } from "@/context/AuthContext";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
@@ -23,7 +23,8 @@ export type DeployFormData = {
 const DeployToken: React.FC = () => {
     const { isLoggedIn } = useAuth();
     const [gasless, setGasless] = useState(true);
-
+    const [erc1155, setErc1155] = useState(false);
+    const [erc20, setErc20] = useState(true);
     const [formData, setFormData] = useState<DeployFormData>({
         name: "",
         symbol: "",
@@ -74,6 +75,14 @@ const DeployToken: React.FC = () => {
         setIsFormCompleted(!hasEmptyField())
     }, [formData])
 
+    const changeERC20 = (value:boolean) => {
+        setErc1155(!value)
+        setErc20(value)
+    }
+    const changeERC1155 = (value:boolean) => {
+        setErc1155(value)
+        setErc20(!value)
+    }
     return (
         <Card>
             <CardHeader>
@@ -87,6 +96,58 @@ const DeployToken: React.FC = () => {
                 <CardDescription>Deploy your meme token on Rootstock!</CardDescription>
             </CardHeader>
             <CardContent className={!isLoggedIn ? "opacity-40" : ""}>
+                <div className="flex flex-row gap-10 w-full mb-4">
+                    <div className="w-auto">
+                        <div className="flex-row flex gap-2 items-center">
+                            <label htmlFor="gasless">ERC20</label>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <HelpCircleIcon className="w-4 h-4" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{"Active this option for deploying ERC20 token."}</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                        </div>
+                        <label className={(!isLoggedIn ? "cursor-default " : "") + "flex relative items-center cursor-pointer mt-2"}>
+                            <input
+                                checked={erc20}
+                                name="erc20"
+                                type="checkbox"
+                                className="sr-only"
+                                disabled={!isLoggedIn}
+                                onChange={(e) => changeERC20(Boolean(e.target.checked))}
+                            />
+                            <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
+                        </label>
+                    </div>
+                    <div className="w-auto">
+                        <div className="flex-row flex gap-2 items-center">
+                            <label htmlFor="gasless">ERC1155</label>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <HelpCircleIcon className="w-4 h-4" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{"Active this option for deploying ERC1155 token."}</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                        </div>
+                        <label className={(!isLoggedIn ? "cursor-default " : "") + "flex relative items-center cursor-pointer mt-2"}>
+                            <input
+                                checked={erc1155}
+                                name="erc20"
+                                type="checkbox"
+                                className="sr-only"
+                                disabled={!isLoggedIn}
+                                onChange={(e) => changeERC1155(Boolean(e.target.checked))}
+                            />
+                            <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
+                        </label>
+                    </div>
+                </div>
                 <div className="flex flex-row gap-10 w-full">
                     <div className="w-full">
                         <div className="flex-row flex gap-2 items-center">
@@ -98,7 +159,7 @@ const DeployToken: React.FC = () => {
                                     <HelpCircleIcon className="w-4 h-4" />
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>Select the strategy to deploy the ERC20 tokens.</p>
+                                    <p>Select the strategy according your tokenomics strategy preference</p>
                                 </TooltipContent>
                             </Tooltip>
                         </div>
@@ -296,7 +357,13 @@ const DeployToken: React.FC = () => {
             </CardContent>
             <CardFooter className="px-8 relative justify-end mb-6">
                 {isLoggedIn ? (
-                    <DeployERC20TokenButton disabled={!isFormCompleted} params={formData} gasless={gasless} />
+                    <DeployTokenButton 
+                        disabled={!isFormCompleted} 
+                        params={formData} 
+                        gasless={gasless}
+                        erc20={erc20}
+                        erc1155={erc1155}
+                    />
                 ) : (
 
                     <ConnectWalletButton title="Connect wallet to deploy" />

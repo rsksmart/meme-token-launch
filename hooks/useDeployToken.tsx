@@ -1,7 +1,8 @@
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useState } from "react";
 import { ethers } from "ethers";
-import MemeTokenFactoryAbi from "@/contracts/abi/MemeTokenFactory";
+import MemeTokenERC20FactoryAbi from "@/contracts/abi/MemeTokenERC20Factory";
+import MemeTokenERC1155FactoryAbi from "@/contracts/abi/MemeTokenERC1155Factory";
 import { DEPLOY_STRATEGY_ENUM } from "@/constants";
 import { UploadImageIpfs } from "@/utils/PinataService";
 import { sponsoredCall } from "@/utils/SponsoredCall";
@@ -13,21 +14,26 @@ type DeployERC20Params = {
   maxSupply: string;
   cid: string;
 }
+type DeployERC1155Params = {
+  name: string;
+  cid: string;
+}
 
 export type DeployERC20Props = DeployERC20Params & {
   strategy: DEPLOY_STRATEGY_ENUM;
 }
 
-const useDeployERC20Token = () => {
+const useDeployToken = () => {
   const { signer, address: signerAddress, env } = useAuth();
-  const { FACTORY_ADDRESS, TOKEN_CREATED_EVENT } = env;
+  const { FACTORY_ADDRESS_ERC1155, FACTORY_ADDRESS_ERC20, TOKEN_CREATED_EVENT } = env;
 
   const [isError, setIsError] = useState(false)
 
   const [txHash, setTxHash] = useState()
   const [contractAddress, setContractAddress] = useState()
 
-  const factory = new ethers.Contract(FACTORY_ADDRESS, MemeTokenFactoryAbi, signer);
+  const factoryERC20 = new ethers.Contract(FACTORY_ADDRESS_ERC20, MemeTokenERC20FactoryAbi, signer);
+  const factoryERC1155 = new ethers.Contract(FACTORY_ADDRESS_ERC1155, MemeTokenERC1155FactoryAbi, signer);
 
   const deployInflationaryToken = async (
     { name, symbol, initialSupply, cid }: DeployERC20Params,
@@ -37,14 +43,14 @@ const useDeployERC20Token = () => {
       const _initialSupply = ethers.parseUnits(initialSupply, 18)
       if (gasless) {
         const txReceipt = await sponsoredCall(
-          factory,
+          factoryERC20,
           'createInflationaryToken',
           [name, symbol, _initialSupply, signerAddress, cid],
-          FACTORY_ADDRESS
+          FACTORY_ADDRESS_ERC20
         )
         return txReceipt
       } else {
-        return factory.createInflationaryToken(
+        return factoryERC20.createInflationaryToken(
           name,
           symbol,
           _initialSupply,
@@ -66,14 +72,14 @@ const useDeployERC20Token = () => {
       const _maxSupply = ethers.parseUnits(maxSupply, 18)
       if (gasless) {
         const txReceipt = await sponsoredCall(
-          factory,
+          factoryERC20,
           'createDeflationaryToken',
           [name, symbol, _initialSupply, _maxSupply, signerAddress, cid],
-          FACTORY_ADDRESS
+          FACTORY_ADDRESS_ERC20
         )
         return txReceipt
       } else {
-        return factory.createDeflationaryToken(
+        return factoryERC20.createDeflationaryToken(
           name,
           symbol,
           _initialSupply,
@@ -87,6 +93,14 @@ const useDeployERC20Token = () => {
     }
   }
 
+  const erc1155Token = async (
+    { name, cid }: DeployERC1155Params,
+    gasless: boolean
+  ) => {
+    
+
+  }
+
   const getContractAddress = async (tx: { hash: any; wait: () => any; logs?:any[]}, gasless: boolean) => {
     if(gasless) {
       if(!tx.logs) {
@@ -95,7 +109,7 @@ const useDeployERC20Token = () => {
       }
       for (const log of tx.logs) {
         try {
-          const parsedLog = factory.interface.parseLog(log);
+          const parsedLog = factoryERC20.interface.parseLog(log);
           if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
             const { tokenAddress } = parsedLog.args;
             return tokenAddress
@@ -109,7 +123,7 @@ const useDeployERC20Token = () => {
   
       for (const log of receipt.logs) {
         try {
-          const parsedLog = factory.interface.parseLog(log);
+          const parsedLog = factoryERC20.interface.parseLog(log);
           if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
             const { tokenAddress } = parsedLog.args;
             return tokenAddress
@@ -142,6 +156,11 @@ const useDeployERC20Token = () => {
     setContractAddress(contractAddress);
   }, [])
 
+  // const deployERC1155 = useCallback(async () => {
+  //   console.log('deploying erc1155 token')
+
+  // })
+
   return {
     deployERC20,
     isError,
@@ -151,4 +170,4 @@ const useDeployERC20Token = () => {
   }
 }
 
-export default useDeployERC20Token
+export default useDeployToken

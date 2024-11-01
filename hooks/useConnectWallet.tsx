@@ -1,13 +1,23 @@
 import { useState, useCallback } from 'react'
 import { ethers, Signer } from 'ethers'
 import { useAuth } from '@/context/AuthContext'
-import MemeTokenFactoryAbi from '@/contracts/abi/MemeTokenFactory'
+import MemeTokenERC20FactoryAbi from '@/contracts/abi/MemeTokenERC20Factory'
 import { ContractInfo, DEPLOY_STRATEGY_ENUM, Token } from '@/constants'
 import DeflationaryTokenAbi from '@/contracts/abi/DeflationaryToken'
 import InflationaryTokenAbi from '@/contracts/abi/InflationaryToken'
 
 const useConnectWallet = () => {
-  const { setAddress, setIsLoggedIn, setSigner, setTokens, tokens, env: { FACTORY_ADDRESS } } = useAuth()
+  const {
+    setAddress,
+    setIsLoggedIn,
+    setSigner,
+    setTokens,
+    tokens,
+    env: { 
+      FACTORY_ADDRESS_ERC1155,
+      FACTORY_ADDRESS_ERC20, 
+    },
+  } = useAuth()
 
   const [isError, setIsError] = useState(false)
   const [provider, setProvider] = useState<
@@ -20,7 +30,9 @@ const useConnectWallet = () => {
   }
 
   const populateTokensListFromOwner = async (signer: Signer, address: string) => {
-    const factory = new ethers.Contract(FACTORY_ADDRESS, MemeTokenFactoryAbi, signer);
+    //erc20
+    //TODO read from erc1155 also
+    const factory = new ethers.Contract(FACTORY_ADDRESS_ERC20, MemeTokenERC20FactoryAbi, signer);
     const tokenAddresses: string[] = await factory.getTokensForOwner(address);
 
     const _tokens: Token[] = []

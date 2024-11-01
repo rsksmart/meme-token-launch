@@ -1,4 +1,17 @@
-const MemeTokenFactoryAbi = [
+const MemeTokenERC20FactoryAbi = [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "tokenAddress",
+				"type": "address"
+			}
+		],
+		"name": "TokenCreated",
+		"type": "event"
+	},
 	{
 		"inputs": [
 			{
@@ -69,19 +82,6 @@ const MemeTokenFactoryAbi = [
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "tokenAddress",
-				"type": "address"
-			}
-		],
-		"name": "TokenCreated",
-		"type": "event"
 	},
 	{
 		"inputs": [
@@ -172,4 +172,4 @@ const MemeTokenFactoryAbi = [
 	}
 ]
 
-export default MemeTokenFactoryAbi
+export default MemeTokenERC20FactoryAbi
