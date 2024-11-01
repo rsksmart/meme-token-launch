@@ -108,7 +108,11 @@ function DeployTokenDialog({
         const props = await deployFormDataToProps(params)
         console.log('Deploying contract with props: ', props)
         return;
-        deployERC20(props, gasless)
+        if(erc20){
+          deployERC20(props, gasless)
+        } else {
+
+        }
       }, 1500)
     } catch (error: any) {
       setIsError(true)

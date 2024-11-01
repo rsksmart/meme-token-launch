@@ -18,6 +18,7 @@ export type DeployFormData = {
     maxSupply: string;
     strategy: DEPLOY_STRATEGY_ENUM;
     image: File | null;
+    tokenID?: number;
 };
 
 const DeployToken: React.FC = () => {
@@ -32,6 +33,7 @@ const DeployToken: React.FC = () => {
         maxSupply: "",
         strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
         image: null as File | null,
+        tokenID: 0,
     });
 
     const router = useRouter();
@@ -40,13 +42,28 @@ const DeployToken: React.FC = () => {
 
     const hasEmptyField = () => {
         return Object.entries(formData).some(([key, value]) => {
-            if (key === "maxSupply" && formData.strategy === DEPLOY_STRATEGY_ENUM.INFLATIONARY) {
-                return false;
+            if(erc20){
+                if (key === "maxSupply" && formData.strategy === DEPLOY_STRATEGY_ENUM.INFLATIONARY) {
+                    return false;
+                }
+                if (key === "image") {
+                    return !value;
+                }
+                return value === "";
+            } else if (erc1155){
+                if (key === "tokenID") {
+                    return value === "";
+                }
+                if (key === "image") {
+                    return !value;
+                }
+                if (key === "name") {
+                    return value === "";
+                }
+                if (key === "initialSupply") {
+                    return value === "";
+                }
             }
-            if (key === "image") {
-                return !value;
-            }
-            return value === "";
         });
     };
 
@@ -73,7 +90,7 @@ const DeployToken: React.FC = () => {
 
     useEffect(() => {
         setIsFormCompleted(!hasEmptyField())
-    }, [formData])
+    }, [formData, erc20])
 
     const changeERC20 = (value:boolean) => {
         setErc1155(!value)
@@ -149,7 +166,7 @@ const DeployToken: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex flex-row gap-10 w-full">
-                    <div className="w-full">
+                   {erc20 && <div className="w-full">
                         <div className="flex-row flex gap-2 items-center">
                             <label htmlFor="strategy" className="block">
                                 Strategy
@@ -174,8 +191,32 @@ const DeployToken: React.FC = () => {
                             <option value={DEPLOY_STRATEGY_ENUM.DEFLATIONARY}>{DEPLOY_STRATEGY.DEFLATIONARY.name}</option>
                             <option value={DEPLOY_STRATEGY_ENUM.INFLATIONARY}>{DEPLOY_STRATEGY.INFLATIONARY.name}</option>
                         </select>
+                    </div>}
+                    {erc1155 && <div className="w-full">
+                        <div className="flex-row flex gap-2 items-center">
+                            <label htmlFor="tokenID" className="">
+                                Token ID
+                            </label>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <HelpCircleIcon className="w-4 h-4" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Enter the ID for the initial mint token.</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
 
-                    </div>
+                        <input
+                            type="text"
+                            name="tokenID"
+                            id="tokenID"
+                            disabled={!isLoggedIn}
+                            value={formData.tokenID}
+                            onChange={handleChange}
+                            className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
+                        />
+                    </div>}
                     <div className="w-full">
                         <div className="flex-row flex gap-2 items-center">
                             <label htmlFor="gasless">Gasless</label>
@@ -228,7 +269,7 @@ const DeployToken: React.FC = () => {
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         />
                     </div>
-                    <div className="w-full">
+                    {erc20 && <div className="w-full">
                         <div className="flex-row flex gap-2 items-center">
                             <label htmlFor="symbol" className="block">
                                 Symbol
@@ -254,7 +295,7 @@ const DeployToken: React.FC = () => {
                             onChange={handleChange}
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         />
-                    </div>
+                    </div>}
                 </div>
                 <div className="w-full mt-4 flex flex-row gap-10">
                     <div className="w-full">
@@ -282,7 +323,7 @@ const DeployToken: React.FC = () => {
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         />
                     </div>
-                    {formData.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY && (
+                    {formData.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY &&  erc20 && (
                         <div className="w-full">
                             <div className="flex-row flex gap-2 items-center">
                                 <label htmlFor="maxSupply" className="">

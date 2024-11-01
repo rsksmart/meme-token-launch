@@ -17,6 +17,8 @@ type DeployERC20Params = {
 type DeployERC1155Params = {
   name: string;
   cid: string;
+  tokenId: string;
+  initialSupply: string;
 }
 
 export type DeployERC20Props = DeployERC20Params & {
