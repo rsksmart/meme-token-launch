@@ -28,16 +28,6 @@ const MemeTokenERC1155FactoryAbi = [
 				"internalType": "string",
 				"name": "uri",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "initialSupply",
-				"type": "uint256"
 			}
 		],
 		"name": "createERC1155Token",

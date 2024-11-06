@@ -37,7 +37,8 @@ export const ROUTER = {
 }
 export enum DEPLOY_STRATEGY_ENUM {
     INFLATIONARY = "inflationary",
-    DEFLATIONARY = "deflationary"
+    DEFLATIONARY = "deflationary",
+    ERC1155 = "erc1155"
 }
 
 export const DEPLOY_STRATEGY = {

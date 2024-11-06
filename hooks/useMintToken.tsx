@@ -20,7 +20,7 @@ const useMintToken = () => {
 
   const [txHash, setTxHash] = useState()
 
-  const strategyToABI = {
+  const strategyToABI:any = {
     [DEPLOY_STRATEGY_ENUM.DEFLATIONARY]: DeflationaryTokenAbi,
     [DEPLOY_STRATEGY_ENUM.INFLATIONARY]: InflationaryTokenAbi
   }

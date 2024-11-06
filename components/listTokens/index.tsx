@@ -108,7 +108,7 @@ const ListTokens: React.FC = () => {
                                 <td className="py-3 px-4 text-center">{token.currentSupply}</td>
                                 <td className=" text-center">
                                     <div className={(token.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY ? "bg-custom-cyan" : "bg-custom-orange") + " font-bold text-background py-1 rounded-full"}>
-                                        {token.strategy}
+                                        {`${token.strategy !== DEPLOY_STRATEGY_ENUM.ERC1155 ? 'erc20 ' : ''}${token.strategy}`}
                                     </div>
                                 </td>
                                 <td className="py-3 px-4 items-center text-center">

@@ -7,7 +7,10 @@ import {
   CopyIcon,
   InfoCircleIcon,
 } from '@/components/icons'
-import useDeployToken, { DeployERC20Props } from '@/hooks/useDeployToken'
+import useDeployToken, {
+  DeployERC1155Props,
+  DeployERC20Props,
+} from '@/hooks/useDeployToken'
 import { copyToClipboard, formatAddress } from '@/lib/utils'
 import { Tooltip, TooltipTrigger } from '../tooltip'
 import { useAuth } from '@/context/AuthContext'
@@ -32,8 +35,14 @@ function DeployTokenDialog({
   erc20,
 }: props) {
   const { env } = useAuth()
-  const { deployERC20, isError, setIsError, contractAddress, txHash } =
-    useDeployToken()
+  const {
+    deployERC20,
+    isError,
+    setIsError,
+    contractAddress,
+    txHash,
+    deployERC1155,
+  } = useDeployToken()
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
 
   const [txHashCopied, setTxHashCopied] = useState(false)
@@ -76,20 +85,15 @@ function DeployTokenDialog({
     maxSupply,
     initialSupply,
   }: DeployFormData) => {
-    console.log('deployformdatatoprops process running')
-
     let cid = ''
 
     if (image) {
       cid = await UploadImageIpfs(image)
-      console.log('cid is ', cid)
-
       if (!cid) {
         console.log('Error uploading image to IPFS')
         setIsError(true)
       }
     }
-
     return {
       strategy,
       name,
@@ -97,21 +101,18 @@ function DeployTokenDialog({
       maxSupply,
       initialSupply,
       cid,
-    } as DeployERC20Props
+    } as DeployERC20Props | DeployERC1155Props
   }
 
   const init = () => {
     setIsError(false)
     try {
-      console.log('Deploying contract with params: ', params)
       setTimeout(async () => {
         const props = await deployFormDataToProps(params)
-        console.log('Deploying contract with props: ', props)
-        return;
-        if(erc20){
-          deployERC20(props, gasless)
+        if (erc20) {
+          deployERC20(props as DeployERC20Props, gasless)
         } else {
-
+          deployERC1155(props as DeployERC1155Props, gasless)
         }
       }, 1500)
     } catch (error: any) {

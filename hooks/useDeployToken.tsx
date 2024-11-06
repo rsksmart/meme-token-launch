@@ -17,13 +17,14 @@ type DeployERC20Params = {
 type DeployERC1155Params = {
   name: string;
   cid: string;
-  tokenId: string;
+  tokenId: number;
   initialSupply: string;
 }
 
 export type DeployERC20Props = DeployERC20Params & {
   strategy: DEPLOY_STRATEGY_ENUM;
 }
+export type DeployERC1155Props = DeployERC1155Params
 
 const useDeployToken = () => {
   const { signer, address: signerAddress, env } = useAuth();
@@ -95,49 +96,32 @@ const useDeployToken = () => {
     }
   }
 
-  const erc1155Token = async (
-    { name, cid }: DeployERC1155Params,
-    gasless: boolean
-  ) => {
-    
-
-  }
-
   const getContractAddress = async (tx: { hash: any; wait: () => any; logs?:any[]}, gasless: boolean) => {
+    let logs = []
     if(gasless) {
       if(!tx.logs) {
         console.log('No logs found in tx');
         return
       }
-      for (const log of tx.logs) {
-        try {
-          const parsedLog = factoryERC20.interface.parseLog(log);
-          if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
-            const { tokenAddress } = parsedLog.args;
-            return tokenAddress
-          }
-        } catch (error) {
-          console.error("Failed to parse log:", error);
-        }
-      }
+      logs = tx.logs
     } else {
       const receipt = await tx.wait();
-  
-      for (const log of receipt.logs) {
-        try {
-          const parsedLog = factoryERC20.interface.parseLog(log);
-          if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
-            const { tokenAddress } = parsedLog.args;
-            return tokenAddress
-          }
-        } catch (error) {
-          console.error("Failed to parse log:", error);
+      logs = receipt.logs
+    }
+    for (const log of logs) {
+      try {
+        const parsedLog = factoryERC20.interface.parseLog(log);
+        if (parsedLog && parsedLog.name === TOKEN_CREATED_EVENT) {
+          const { tokenAddress } = parsedLog.args;
+          return tokenAddress
         }
+      } catch (error) {
+        console.error("Failed to parse log:", error);
       }
     }
   }
 
-  const strategyToFunctionMapper = {
+  const strategyToFunctionMapper : any = {
     [DEPLOY_STRATEGY_ENUM.DEFLATIONARY]: deployDeflationaryToken,
     [DEPLOY_STRATEGY_ENUM.INFLATIONARY]: deployInflationaryToken
   }
@@ -150,7 +134,6 @@ const useDeployToken = () => {
       initialSupply,
       cid
     }
-    console.log('params for the token are :', params);
     
     const tx = await strategyToFunctionMapper[strategy](params, gasless)
     setTxHash(gasless ?  tx.transactionHash : tx.hash)
@@ -158,17 +141,33 @@ const useDeployToken = () => {
     setContractAddress(contractAddress);
   }, [])
 
-  // const deployERC1155 = useCallback(async () => {
-  //   console.log('deploying erc1155 token')
-
-  // })
+  const deployERC1155 = useCallback(async ({name, cid} : DeployERC1155Params, gasless: boolean) => {
+    try {
+      if(gasless){
+        const tx = await sponsoredCall(
+          factoryERC1155,
+          'createERC1155Token',
+          [name, signerAddress, cid],
+          FACTORY_ADDRESS_ERC1155
+        )
+      }else {
+        const tx = await factoryERC1155.createERC1155Token(name, signerAddress, cid)
+        setTxHash(tx.hash)
+        const contractAddress = await getContractAddress(tx, gasless)
+        setContractAddress(contractAddress);
+      }
+    } catch (error) {
+      console.log('Error deploying deflationary token:', error)
+    }
+  }, [])
 
   return {
     deployERC20,
     isError,
     setIsError,
     contractAddress,
-    txHash
+    txHash,
+    deployERC1155
   }
 }
 

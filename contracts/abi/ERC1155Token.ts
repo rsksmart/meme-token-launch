@@ -1,4 +1,4 @@
-const InflationaryTokenAbi = [
+const ERC1155TokenAbi = [
 	{
 		"inputs": [
 			{
@@ -589,4 +589,4 @@ const InflationaryTokenAbi = [
 	}
 ]
 
-export default InflationaryTokenAbi;
+export default ERC1155TokenAbi;

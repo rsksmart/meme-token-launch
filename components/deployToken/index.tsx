@@ -18,7 +18,6 @@ export type DeployFormData = {
     maxSupply: string;
     strategy: DEPLOY_STRATEGY_ENUM;
     image: File | null;
-    tokenID?: number;
 };
 
 const DeployToken: React.FC = () => {
@@ -33,7 +32,6 @@ const DeployToken: React.FC = () => {
         maxSupply: "",
         strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
         image: null as File | null,
-        tokenID: 0,
     });
 
     const router = useRouter();
@@ -51,9 +49,6 @@ const DeployToken: React.FC = () => {
                 }
                 return value === "";
             } else if (erc1155){
-                if (key === "tokenID") {
-                    return value === "";
-                }
                 if (key === "image") {
                     return !value;
                 }
@@ -164,9 +159,34 @@ const DeployToken: React.FC = () => {
                             <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
                         </label>
                     </div>
+                    <div className="w-auto">
+                        <div className="flex-row flex gap-2 items-center">
+                            <label htmlFor="gasless">Gasless</label>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <HelpCircleIcon className="w-4 h-4" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{"Active this option if you don\'t have enough rBTC."}</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                        </div>
+                        <label className={(!isLoggedIn ? "cursor-default " : "") + "flex relative items-center cursor-pointer mt-2"}>
+                            <input
+                                checked={gasless}
+                                name="gasless"
+                                type="checkbox"
+                                className="sr-only"
+                                disabled={!isLoggedIn}
+                                onChange={(e) => setGasless(Boolean(e.target.checked))}
+                            />
+                            <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
+                        </label>
+                    </div>
                 </div>
                 <div className="flex flex-row gap-10 w-full">
-                   {erc20 && <div className="w-full">
+                    {erc20 && <div className="w-full">
                         <div className="flex-row flex gap-2 items-center">
                             <label htmlFor="strategy" className="block">
                                 Strategy
@@ -192,56 +212,7 @@ const DeployToken: React.FC = () => {
                             <option value={DEPLOY_STRATEGY_ENUM.INFLATIONARY}>{DEPLOY_STRATEGY.INFLATIONARY.name}</option>
                         </select>
                     </div>}
-                    {erc1155 && <div className="w-full">
-                        <div className="flex-row flex gap-2 items-center">
-                            <label htmlFor="tokenID" className="">
-                                Token ID
-                            </label>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <HelpCircleIcon className="w-4 h-4" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>Enter the ID for the initial mint token.</p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </div>
-
-                        <input
-                            type="text"
-                            name="tokenID"
-                            id="tokenID"
-                            disabled={!isLoggedIn}
-                            value={formData.tokenID}
-                            onChange={handleChange}
-                            className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
-                        />
-                    </div>}
-                    <div className="w-full">
-                        <div className="flex-row flex gap-2 items-center">
-                            <label htmlFor="gasless">Gasless</label>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <HelpCircleIcon className="w-4 h-4" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>{"Active this option if you don\'t have enough rBTC."}</p>
-                                </TooltipContent>
-                            </Tooltip>
-
-                        </div>
-                        <label className={(!isLoggedIn ? "cursor-default " : "") + "flex relative items-center cursor-pointer mt-2"}>
-                            <input
-                                checked={gasless}
-                                name="gasless"
-                                type="checkbox"
-                                className="sr-only"
-                                disabled={!isLoggedIn}
-                                onChange={(e) => setGasless(Boolean(e.target.checked))}
-                            />
-                            <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
-                        </label>
-                    </div>
+                    
 
                 </div>
                 <div className="my-4 flex flex-row gap-10">
