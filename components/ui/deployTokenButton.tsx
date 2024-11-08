@@ -2,26 +2,30 @@
 
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import DeployERC20TokenDialog from '@/components/ui/dialog/deployERC20TokenDialog'
+import DeployTokenDialog from '@/components/ui/dialog/deployTokenDialog'
 import { DeployFormData } from '@/components/deployToken'
 
 type Props = {
   disabled: boolean
   gasless: boolean
   params: DeployFormData
+  erc20: boolean
+  erc1155: boolean
 }
 
-const DeployERC20TokenButton = ({disabled, params, gasless}: Props) => {
+const DeployTokenButton = ({disabled, params, gasless, erc1155, erc20}: Props) => {
   const [dialog, setDialog] = useState<boolean>(false)
 
   return (
     <div>
       {dialog && (
-        <DeployERC20TokenDialog
+        <DeployTokenDialog
           closeDialog={() => setDialog(false)}
           open={dialog}
           params={params}
           gasless={gasless}
+          erc20={erc20}
+          erc1155={erc1155}
         />
       )}
       <Button
@@ -37,4 +41,4 @@ const DeployERC20TokenButton = ({disabled, params, gasless}: Props) => {
   )
 }
 
-export default DeployERC20TokenButton
+export default DeployTokenButton

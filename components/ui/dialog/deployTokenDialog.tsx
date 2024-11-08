@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import BaseDialog from '@/components/ui/dialog/baseDialog'
-import { MetamaskIcon, ErrorCircleIcon, CheckCircleIcon, CopyIcon, InfoCircleIcon } from '@/components/icons'
-import useDeployERC20Token, { DeployERC20Props } from '@/hooks/useDeployERC20Token'
+import {
+  MetamaskIcon,
+  ErrorCircleIcon,
+  CheckCircleIcon,
+  CopyIcon,
+  InfoCircleIcon,
+} from '@/components/icons'
+import useDeployToken, {
+  DeployERC1155Props,
+  DeployERC20Props,
+} from '@/hooks/useDeployToken'
 import { copyToClipboard, formatAddress } from '@/lib/utils'
 import { Tooltip, TooltipTrigger } from '../tooltip'
 import { useAuth } from '@/context/AuthContext'
@@ -13,34 +22,49 @@ type props = {
   open: boolean
   gasless: boolean
   params: DeployFormData
+  erc20: boolean
+  erc1155: boolean
 }
 
-function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
-  const { env } = useAuth();
-  const { deployERC20, isError, setIsError, contractAddress, txHash } = useDeployERC20Token();
+function DeployTokenDialog({
+  closeDialog,
+  open,
+  params,
+  gasless,
+  erc1155,
+  erc20,
+}: props) {
+  const { env } = useAuth()
+  const {
+    deployERC20,
+    isError,
+    setIsError,
+    contractAddress,
+    txHash,
+    deployERC1155,
+  } = useDeployToken()
   const [isDeployed, setIsDeployed] = useState<boolean>(false)
 
-  const [txHashCopied, setTxHashCopied] = useState(false);
-  const [contractAddressCopied, setContractAddressCopied] = useState(false);
-
+  const [txHashCopied, setTxHashCopied] = useState(false)
+  const [contractAddressCopied, setContractAddressCopied] = useState(false)
 
   useEffect(() => {
     if (txHashCopied) {
       const timer = setTimeout(() => {
-        setTxHashCopied(false);
-      }, 1000);
-      return () => clearTimeout(timer);
+        setTxHashCopied(false)
+      }, 1000)
+      return () => clearTimeout(timer)
     }
-  }, [txHashCopied]);
+  }, [txHashCopied])
 
   useEffect(() => {
     if (contractAddressCopied) {
       const timer = setTimeout(() => {
-        setContractAddressCopied(false);
-      }, 1000);
-      return () => clearTimeout(timer);
+        setContractAddressCopied(false)
+      }, 1000)
+      return () => clearTimeout(timer)
     }
-  }, [contractAddressCopied]);
+  }, [contractAddressCopied])
 
   useEffect(() => {
     if (!isDeployed && !contractAddress) {
@@ -53,29 +77,31 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
     }
   }, [contractAddress])
 
-  const deployFormDataToProps = async ({image, strategy, name, symbol, maxSupply, initialSupply}: DeployFormData) => {
-    console.log('deployformdatatoprops process running');
-    
-    let cid  = "";
+  const deployFormDataToProps = async ({
+    image,
+    strategy,
+    name,
+    symbol,
+    maxSupply,
+    initialSupply,
+  }: DeployFormData) => {
+    let cid = ''
 
-    if(image) {
+    if (image) {
       cid = await UploadImageIpfs(image)
-      console.log('cid is ', cid);
-      
-      if(!cid) {
-        console.log('Error uploading image to IPFS');
+      if (!cid) {
+        console.log('Error uploading image to IPFS')
         setIsError(true)
       }
     }
-
     return {
       strategy,
       name,
       symbol,
       maxSupply,
       initialSupply,
-      cid
-    } as DeployERC20Props
+      cid,
+    } as DeployERC20Props | DeployERC1155Props
   }
 
   const init = () => {
@@ -83,8 +109,11 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
     try {
       setTimeout(async () => {
         const props = await deployFormDataToProps(params)
-        console.log('Deploying contract with props: ', props);
-        deployERC20(props, gasless)
+        if (erc20) {
+          deployERC20(props as DeployERC20Props, gasless)
+        } else {
+          deployERC1155(props as DeployERC1155Props, gasless)
+        }
       }, 1500)
     } catch (error: any) {
       setIsError(true)
@@ -93,11 +122,10 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
   }
 
   return (
-
     <BaseDialog
       closeDialog={closeDialog}
       open={open}
-      className={isDeployed ? "w-[500px] " : "w-[500px] h-[350px]"}
+      className={isDeployed ? 'w-[500px] ' : 'w-[500px] h-[350px]'}
     >
       {isDeployed ? (
         <div className="flex flex-col items-center">
@@ -105,7 +133,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
             Contract deployed!
           </h2>
           <CheckCircleIcon className="w-[70px] h-[70px] text-custom-green" />
-          <div className='w-full flex flex row items-center justify-center text-xl mt-6'>
+          <div className="w-full flex flex row items-center justify-center text-xl mt-6">
             Transaction id:
             <a
               href={env.EXPLORER_TX_BASE_URL + txHash}
@@ -115,21 +143,21 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
             >
               {formatAddress(txHash!)}
             </a>
-            <div className='ml-2 flex items-center'>
-              <Tooltip >
+            <div className="ml-2 flex items-center">
+              <Tooltip>
                 <TooltipTrigger>
                   {txHashCopied ? (
                     <CheckCircleIcon
                       onClick={() => {
-                        copyToClipboard(txHash!);
+                        copyToClipboard(txHash!)
                       }}
                       className="w-5 h-5 text-green-500"
                     ></CheckCircleIcon>
                   ) : (
                     <CopyIcon
                       onClick={() => {
-                        copyToClipboard(txHash!);
-                        setTxHashCopied(true);
+                        copyToClipboard(txHash!)
+                        setTxHashCopied(true)
                       }}
                       className="w-5 h-5 hover:text-white cursor-pointer"
                     />
@@ -138,7 +166,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
               </Tooltip>
             </div>
           </div>
-          <div className='w-full flex flex row items-center justify-center text-xl'>
+          <div className="w-full flex flex row items-center justify-center text-xl">
             Contract address:
             <a
               href={env.EXPLORER_ADDRESS_BASE_URL + contractAddress}
@@ -148,21 +176,21 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
             >
               {formatAddress(contractAddress!)}
             </a>
-            <div className='ml-2 flex items-center'>
-              <Tooltip >
+            <div className="ml-2 flex items-center">
+              <Tooltip>
                 <TooltipTrigger>
                   {contractAddressCopied ? (
                     <CheckCircleIcon
                       onClick={() => {
-                        copyToClipboard(contractAddress!);
+                        copyToClipboard(contractAddress!)
                       }}
                       className="w-5 h-5 text-green-500"
                     ></CheckCircleIcon>
                   ) : (
                     <CopyIcon
                       onClick={() => {
-                        copyToClipboard(contractAddress!);
-                        setContractAddressCopied(true);
+                        copyToClipboard(contractAddress!)
+                        setContractAddressCopied(true)
                       }}
                       className="w-5 h-5 hover:text-white cursor-pointer"
                     />
@@ -171,14 +199,18 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
               </Tooltip>
             </div>
           </div>
-          <div className='w-full  mt-8 '>
-            <div className='bg-custom-cyan rounded-md w-full p-4 px-6 flex flex-col gap-2 text-black'>
-              <div className='text-xl w-full flex flex-row items-center gap-2'>
-                <InfoCircleIcon className='w-5 h-5' /> Info
+          <div className="w-full  mt-8 ">
+            <div className="bg-custom-cyan rounded-md w-full p-4 px-6 flex flex-col gap-2 text-black">
+              <div className="text-xl w-full flex flex-row items-center gap-2">
+                <InfoCircleIcon className="w-5 h-5" /> Info
               </div>
-              <div className='ml-6'>
+              <div className="ml-6">
                 <ul className="list-disc">
-                  <li>{"Make sure that you've save a copy of the contract address. You could lost access to your tokens."}</li>
+                  <li>
+                    {
+                      "Make sure that you've save a copy of the contract address. You could lost access to your tokens."
+                    }
+                  </li>
                 </ul>
               </div>
             </div>
@@ -187,7 +219,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
       ) : (
         <div>
           {!isError ? (
-            <div className='flex flex-col justify-center items-center'>
+            <div className="flex flex-col justify-center items-center">
               <h2 className="text-2xl text-slate-100 text-center font-semibold mb-8 mt-6">
                 Deploying contract
               </h2>
@@ -195,7 +227,7 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
                 <MetamaskIcon className="w-[70px] h-[70px] absolute" />
                 <div className="animate-spin border border-r-slate-300 w-[140px] h-[140px] rounded-full"></div>
               </div>
-              { txHash && (
+              {txHash && (
                 <a
                   href={env.EXPLORER_TX_BASE_URL + txHash}
                   target="_blank"
@@ -228,4 +260,4 @@ function DeployERC20TokenDialog({ closeDialog, open, params, gasless }: props) {
   )
 }
 
-export default DeployERC20TokenDialog
+export default DeployTokenDialog

@@ -1,75 +1,4 @@
-const MemeTokenFactoryAbi = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "symbol",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "initialSupply",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "maxSupply",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "initialOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "uri",
-				"type": "string"
-			}
-		],
-		"name": "createDeflationaryToken",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "symbol",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "initialSupply",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "initialOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "uri",
-				"type": "string"
-			}
-		],
-		"name": "createInflationaryToken",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
+const MemeTokenERC1155FactoryAbi = [
 	{
 		"anonymous": false,
 		"inputs": [
@@ -82,6 +11,29 @@ const MemeTokenFactoryAbi = [
 		],
 		"name": "TokenCreated",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "initialOwner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "uri",
+				"type": "string"
+			}
+		],
+		"name": "createERC1155Token",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -162,7 +114,7 @@ const MemeTokenFactoryAbi = [
 				"type": "string"
 			},
 			{
-				"internalType": "enum MemeTokenFactory.Strategy",
+				"internalType": "enum MemeTokenERC1155Factory.Strategy",
 				"name": "strategy",
 				"type": "uint8"
 			}
@@ -172,4 +124,4 @@ const MemeTokenFactoryAbi = [
 	}
 ]
 
-export default MemeTokenFactoryAbi
+export default MemeTokenERC1155FactoryAbi
