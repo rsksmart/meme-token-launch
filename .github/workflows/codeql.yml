@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [typescript]
+        language: [javascript]
 
     steps:
       - name: Checkout
@@ -32,7 +32,6 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
-          tools: all
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@f779452ac5af1c261dce0346a8f964149f49322b #v3.26.13
