@@ -40,3 +40,4 @@ jobs:
         uses: github/codeql-action/analyze@f779452ac5af1c261dce0346a8f964149f49322b #v3.26.13
         with:
           category: "/language:${{ matrix.language }}"
+          
