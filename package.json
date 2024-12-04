@@ -16,7 +16,7 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "axios": "^1.7.5",
     "class-variance-authority": "^0.7.0",
-    "ethers": "^6.13.2",
+    "ethers": "^6.13.4",
     "next": "15.0.3",
     "pino-pretty": "^11.2.2",
     "react": "^18",
