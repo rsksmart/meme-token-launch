@@ -19,14 +19,14 @@
     "ethers": "^6.13.4",
     "next": "15.0.3",
     "pino-pretty": "^11.2.2",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19",
+    "react-dom": "^19",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^22",
-    "@types/react": "^18",
+    "@types/react": "^19",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "^15.0.3",
