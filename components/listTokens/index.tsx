@@ -1,43 +1,25 @@
 'use client'
-import Image from "next/image";
-import { useEffect, useState } from "react";
+
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip"
-import { useAuth } from "@/context/AuthContext";
-import { CheckCircleIcon, CopyIcon, } from "@/components/icons";
-import { copyToClipboard, formatAddress } from "@/lib/utils";
+import {  CopyIcon } from "@/components/icons";
+import { formatAddress } from "@/lib/utils";
 import MintTokenButton from "../ui/mintTokenButton";
 import { DEPLOY_STRATEGY_ENUM } from "@/constants";
-import useConnectWallet from "@/hooks/useConnectWallet";
-
 
 const ListTokens: React.FC = () => {
-    const { isLoggedIn, env, tokens, signer, address } = useAuth();
-    const { populateTokensListFromOwner } = useConnectWallet();
-
-    const [copiedAddresses, setCopiedAddresses] = useState<Record<string, boolean>>({});
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            populateTokensListFromOwner(signer!, address)
+    // Placeholder data for UI demonstration
+    const isLoggedIn = true;
+    const tokens = [
+        {
+            name: "Sample Token",
+            symbol: "STK",
+            address: "0x1234567890123456789012345678901234567890",
+            currentSupply: "1,000,000",
+            strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
+            uri: null
         }
-    }, []);
+    ];
 
-
-    const handleCopyToClipboard = (address: string) => {
-        copyToClipboard(address).then(() => {
-            setCopiedAddresses((prevState) => ({
-                ...prevState,
-                [address]: true,
-            }));
-
-            setTimeout(() => {
-                setCopiedAddresses((prevState) => ({
-                    ...prevState,
-                    [address]: false,
-                }));
-            }, 1000);
-        });
-    };
     return (
         <>
             {tokens.length === 0 ? (
@@ -78,30 +60,18 @@ const ListTokens: React.FC = () => {
                                 <td className="py-3 px-4 text-center">{token.symbol}</td>
                                 <td className="py-3 px-4 my-3 flex justify-center items-center gap-3">
                                     <a
-                                        href={env.EXPLORER_ADDRESS_BASE_URL + token.address}
+                                        href={"#"}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="font-semibold"
                                     >
-                                        {formatAddress(token.address!)}
+                                        {formatAddress(token.address)}
                                     </a>
-                                    <Tooltip >
+                                    <Tooltip>
                                         <TooltipTrigger>
-                                            {copiedAddresses[token.address] ? (
-                                                <CheckCircleIcon
-                                                    onClick={() => {
-                                                        handleCopyToClipboard(token.address!);
-                                                    }}
-                                                    className="w-5 h-5 text-green-500"
-                                                ></CheckCircleIcon>
-                                            ) : (
-                                                <CopyIcon
-                                                    onClick={() => {
-                                                        handleCopyToClipboard(token.address)
-                                                    }}
-                                                    className="w-5 h-5 hover:text-white cursor-pointer"
-                                                />
-                                            )}
+                                            <CopyIcon
+                                                className="w-5 h-5 hover:text-white cursor-pointer"
+                                            />
                                         </TooltipTrigger>
                                     </Tooltip>
                                 </td>

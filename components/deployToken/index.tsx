@@ -1,100 +1,32 @@
 'use client'
 
-import { ChangeEvent, useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import DeployTokenButton from "@/components/ui/deployTokenButton";
 import { DEPLOY_STRATEGY, DEPLOY_STRATEGY_ENUM, ROUTER } from "@/constants";
-import { useAuth } from "@/context/AuthContext";
 import ConnectWalletButton from "@/components/ui/connectWalletButton";
 import { HelpCircleIcon } from "@/components/icons";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 import { useRouter } from "next/navigation";
 
-export type DeployFormData = {
-    name: string;
-    symbol: string;
-    initialSupply: string;
-    maxSupply: string;
-    strategy: DEPLOY_STRATEGY_ENUM;
-    image: File | null;
-};
-
 const DeployToken: React.FC = () => {
-    const { isLoggedIn } = useAuth();
-    const [gasless, setGasless] = useState(true);
-    const [erc1155, setErc1155] = useState(false);
-    const [erc20, setErc20] = useState(true);
-    const [formData, setFormData] = useState<DeployFormData>({
-        name: "",
-        symbol: "",
-        initialSupply: "",
-        maxSupply: "",
+    // Placeholder data for UI demonstration
+    const isLoggedIn = true;
+    const gasless = true;
+    const erc20 = true;
+    const erc1155 = false;
+    const formData = {
+        name: "Sample Token",
+        symbol: "STK",
+        initialSupply: "1000000",
+        maxSupply: "10000000",
         strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
-        image: null as File | null,
-    });
+        image: null as File | null
+    };
+    const isFormCompleted = true;
 
     const router = useRouter();
 
-    const [isFormCompleted, setIsFormCompleted] = useState(false)
-
-    const hasEmptyField = () => {
-        return Object.entries(formData).some(([key, value]) => {
-            if(erc20){
-                if (key === "maxSupply" && formData.strategy === DEPLOY_STRATEGY_ENUM.INFLATIONARY) {
-                    return false;
-                }
-                if (key === "image") {
-                    return !value;
-                }
-                return value === "";
-            } else if (erc1155){
-                if (key === "image") {
-                    return !value;
-                }
-                if (key === "name") {
-                    return value === "";
-                }
-                if (key === "initialSupply") {
-                    return value === "";
-                }
-            }
-        });
-    };
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, files } = e.target as HTMLInputElement;
-
-        if (name === "image" && files && files.length > 0) {
-            const file = files[0];
-            if (file.type === "image/png" || file.type === "image/jpeg") {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    image: file,
-                }));
-            } else {
-                alert("Please select a PNG or JPG image.");
-            }
-        } else {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
-        }
-    };
-
-    useEffect(() => {
-        setIsFormCompleted(!hasEmptyField())
-    }, [formData, erc20])
-
-    const changeERC20 = (value:boolean) => {
-        setErc1155(!value)
-        setErc20(value)
-    }
-    const changeERC1155 = (value:boolean) => {
-        setErc1155(value)
-        setErc20(!value)
-    }
     return (
         <Card>
             <CardHeader>
@@ -120,7 +52,6 @@ const DeployToken: React.FC = () => {
                                     <p>{"Active this option for deploying ERC20 token."}</p>
                                 </TooltipContent>
                             </Tooltip>
-
                         </div>
                         <label className={(!isLoggedIn ? "cursor-default " : "") + "flex relative items-center cursor-pointer mt-2"}>
                             <input
@@ -129,7 +60,6 @@ const DeployToken: React.FC = () => {
                                 type="checkbox"
                                 className="sr-only"
                                 disabled={!isLoggedIn}
-                                onChange={(e) => changeERC20(Boolean(e.target.checked))}
                             />
                             <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
                         </label>
@@ -145,7 +75,6 @@ const DeployToken: React.FC = () => {
                                     <p>{"Active this option for deploying ERC1155 token."}</p>
                                 </TooltipContent>
                             </Tooltip>
-
                         </div>
                         <label className={(!isLoggedIn ? "cursor-default " : "") + "flex relative items-center cursor-pointer mt-2"}>
                             <input
@@ -154,7 +83,6 @@ const DeployToken: React.FC = () => {
                                 type="checkbox"
                                 className="sr-only"
                                 disabled={!isLoggedIn}
-                                onChange={(e) => changeERC1155(Boolean(e.target.checked))}
                             />
                             <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
                         </label>
@@ -170,7 +98,6 @@ const DeployToken: React.FC = () => {
                                     <p>{"Active this option if you don\'t have enough rBTC."}</p>
                                 </TooltipContent>
                             </Tooltip>
-
                         </div>
                         <label className={(!isLoggedIn ? "cursor-default " : "") + "flex relative items-center cursor-pointer mt-2"}>
                             <input
@@ -179,7 +106,6 @@ const DeployToken: React.FC = () => {
                                 type="checkbox"
                                 className="sr-only"
                                 disabled={!isLoggedIn}
-                                onChange={(e) => setGasless(Boolean(e.target.checked))}
                             />
                             <span className={(!isLoggedIn ? "cursor-default " : "") + "w-11 h-6 bg-card rounded-full border border-input toggle-bg"}></span>
                         </label>
@@ -205,15 +131,12 @@ const DeployToken: React.FC = () => {
                             id="strategy"
                             disabled={!isLoggedIn}
                             value={formData.strategy}
-                            onChange={handleChange}
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         >
                             <option value={DEPLOY_STRATEGY_ENUM.DEFLATIONARY}>{DEPLOY_STRATEGY.DEFLATIONARY.name}</option>
                             <option value={DEPLOY_STRATEGY_ENUM.INFLATIONARY}>{DEPLOY_STRATEGY.INFLATIONARY.name}</option>
                         </select>
                     </div>}
-                    
-
                 </div>
                 <div className="my-4 flex flex-row gap-10">
                     <div className="w-full">
@@ -236,7 +159,6 @@ const DeployToken: React.FC = () => {
                             id="name"
                             disabled={!isLoggedIn}
                             value={formData.name}
-                            onChange={handleChange}
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         />
                     </div>
@@ -256,14 +178,12 @@ const DeployToken: React.FC = () => {
                                 </TooltipContent>
                             </Tooltip>
                         </div>
-
                         <input
                             type="text"
                             name="symbol"
                             id="symbol"
                             disabled={!isLoggedIn}
                             value={formData.symbol}
-                            onChange={handleChange}
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         />
                     </div>}
@@ -283,18 +203,16 @@ const DeployToken: React.FC = () => {
                                 </TooltipContent>
                             </Tooltip>
                         </div>
-
                         <input
                             type="text"
                             name="initialSupply"
                             id="initialSupply"
                             disabled={!isLoggedIn}
                             value={formData.initialSupply}
-                            onChange={handleChange}
                             className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                         />
                     </div>
-                    {formData.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY &&  erc20 && (
+                    {formData.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY && erc20 && (
                         <div className="w-full">
                             <div className="flex-row flex gap-2 items-center">
                                 <label htmlFor="maxSupply" className="">
@@ -309,14 +227,12 @@ const DeployToken: React.FC = () => {
                                     </TooltipContent>
                                 </Tooltip>
                             </div>
-
                             <input
                                 type="text"
                                 name="maxSupply"
                                 id="maxSupply"
                                 disabled={!isLoggedIn}
                                 value={formData.maxSupply}
-                                onChange={handleChange}
                                 className="mt-2 w-full px-3 py-2 border border-[hsl(var(--border))] rounded-md bg-[hsl(var(--card))] focus:border-gray-200 focus:outline-none"
                             />
                         </div>
@@ -347,7 +263,6 @@ const DeployToken: React.FC = () => {
                                     <span className="text-2xl">N/A</span>
                                 </div>
                             )}
-
                         </div>
                         <label
                             htmlFor="image"
@@ -361,7 +276,6 @@ const DeployToken: React.FC = () => {
                             id="image"
                             disabled={!isLoggedIn}
                             accept="image/png, image/jpeg"
-                            onChange={handleChange}
                             className="hidden"
                         />
                     </div>
@@ -377,10 +291,8 @@ const DeployToken: React.FC = () => {
                         erc1155={erc1155}
                     />
                 ) : (
-
                     <ConnectWalletButton title="Connect wallet to deploy" />
-                )
-                }
+                )}
             </CardFooter>
         </Card>
     )
