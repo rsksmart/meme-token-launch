@@ -1,21 +1,10 @@
 'use client'
 
-import ConnectedWallet from "@/components/connectedWallet";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import ConnectWalletButton from "@/components/ui/connectWalletButton";
-import { useAuth } from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { ROUTER } from "@/constants";
 import ListTokens from "@/components/listTokens";
 
-
 export default function TokenLaunch() {
-    const { isLoggedIn } = useAuth();
-
-    const router = useRouter()
-
     return (
         <main className="h-full w-full flex flex-col">
             <Navbar />
@@ -32,36 +21,16 @@ export default function TokenLaunch() {
                             </span>
                         </span>
                     </h1>
-                    {isLoggedIn ?
-                        (
-                            <div className="flex items-center gap-4">
-                                <ConnectedWallet />
-                            </div>
-                        ) :
-                        (
-                            <div className="flex items-center gap-4">
-                                <ConnectWalletButton />
-                            </div>
-                        )
-                    }
                 </div>
 
                 <div className="mt-10 w-full flex flex-col justify-center gap-4">
                     <div className="flex items-end justify-between flex-row gap-6">
                         <h1 className="text-2xl font-bold">Your tokens</h1>
-                        <Button
-                            className="bg-white text-2xl text-black before:w-full active:bg-slate-400"
-                            type="submit"
-                            variant={'outline'}
-                            onClick={() => router.push(ROUTER.DEPLOY_TOKEN)}>
-                            Deploy a new token
-                        </Button>
                     </div>
                     <div className="mt-8">
                         <ListTokens />
                     </div>
                 </div>
-
             </section>
             <Footer />
         </main>

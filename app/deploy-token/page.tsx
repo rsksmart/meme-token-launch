@@ -1,48 +1,26 @@
 'use client'
 
-import ConnectedWallet from "@/components/connectedWallet";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import ConnectWalletButton from "@/components/ui/connectWalletButton";
-import { useAuth } from "@/context/AuthContext";
 import DeployToken from "@/components/deployToken";
+import { ConnectButton } from "thirdweb/react";
+import { client } from "@/lib/thirdweb";
 
 export default function TokenLaunch() {
-  const { isLoggedIn } = useAuth();
-
   return (
-    <main className="h-full w-full flex flex-col">
+    <main className="min-h-screen flex flex-col">
       <Navbar />
-      <section className="w-full px-6 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto mt-4">
-        <div className="flex justify-between flex-row">
+      <section className="flex-1 w-full px-6 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto py-8">
+        <div className="flex justify-between flex-row mb-8">
           <h1 className="md:text-6xl xl:text-[78px] relative z-10 font-bold text-black flex flex-col gap-2.5">
-            <span className="max-w-max px-1.5 bg-white">Meme Token Launch</span>
-            <span className="flex gap-2">
-              <span className="bg-custom-green px-1.5 w-max xl:text-5xl">
-                Memes
-              </span>
-              <span className="bg-title px-1.5 w-max xl:text-5xl">
-                on Rootstock
-              </span>
-            </span>
+            <span className="max-w-max px-1.5 bg-orange-500">Token Launch</span>
           </h1>
-          {isLoggedIn ?
-            (
-              <div className="flex items-center gap-4">
-                <ConnectedWallet />
-              </div>
-            ) :
-            (
-              <div className="flex items-center gap-4">
-                <ConnectWalletButton />
-              </div>
-            )
-          }
-        </div>
-        <div className="mt-10 w-full flex justify-center">
-          <div className="flex w-[760px]">
-            <DeployToken />
+          <div>
+            <ConnectButton client={client} />
           </div>
+        </div>
+        <div className="w-full">
+          <DeployToken />
         </div>
       </section>
       <Footer />

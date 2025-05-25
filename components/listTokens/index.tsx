@@ -3,8 +3,7 @@
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip"
 import {  CopyIcon } from "@/components/icons";
 import { formatAddress } from "@/lib/utils";
-import MintTokenButton from "../ui/mintTokenButton";
-import { DEPLOY_STRATEGY_ENUM } from "@/constants";
+
 
 const ListTokens: React.FC = () => {
     // Placeholder data for UI demonstration
@@ -15,7 +14,6 @@ const ListTokens: React.FC = () => {
             symbol: "STK",
             address: "0x1234567890123456789012345678901234567890",
             currentSupply: "1,000,000",
-            strategy: DEPLOY_STRATEGY_ENUM.DEFLATIONARY,
             uri: null
         }
     ];
@@ -76,14 +74,8 @@ const ListTokens: React.FC = () => {
                                     </Tooltip>
                                 </td>
                                 <td className="py-3 px-4 text-center">{token.currentSupply}</td>
-                                <td className=" text-center">
-                                    <div className={(token.strategy == DEPLOY_STRATEGY_ENUM.DEFLATIONARY ? "bg-custom-cyan" : "bg-custom-orange") + " font-bold text-background py-1 rounded-full"}>
-                                        {`${token.strategy !== DEPLOY_STRATEGY_ENUM.ERC1155 ? 'erc20 ' : ''}${token.strategy}`}
-                                    </div>
-                                </td>
-                                <td className="py-3 px-4 items-center text-center">
-                                    <MintTokenButton disabled={!isLoggedIn} address={token.address} strategy={token.strategy} />
-                                </td>
+                              
+                               
                             </tr>
                         ))}
                     </tbody>
