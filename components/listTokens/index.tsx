@@ -3,6 +3,7 @@
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip"
 import {  CopyIcon } from "@/components/icons";
 import { formatAddress } from "@/lib/utils";
+import Image from "next/image";
 
 
 const ListTokens: React.FC = () => {
@@ -42,10 +43,17 @@ const ListTokens: React.FC = () => {
                             <tr key={index} className="border-b hover:bg-card hover:text-custom-pink transition-colors">
                                 <td className="py-3 px-4">
                                     {token.uri ? (
-                                        <img
-                                            src={`${process.env.NEXT_PUBLIC_PINATA_URL}${token.uri}`}
+                                      // eventully migrated to media render component from thirdweb 
+                                      <Image
+                                            src={token.uri ? `${process.env.NEXT_PUBLIC_PINATA_URL || 'https://ipfs.io/ipfs/'}${token.uri}` : '/placeholder-token.png'}
                                             alt={`${token.name} logo`}
-                                            className="w-12 h-12 object-cover rounded-full"
+                                            width={48}
+                                            height={48}
+                                            className="object-cover rounded-full"
+                                            onError={(e) => {
+                                                const target = e.target as HTMLImageElement;
+                                                target.src = '/placeholder-token.png';
+                                            }}
                                         />
                                     ) : (
                                         <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
