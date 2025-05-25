@@ -2,8 +2,8 @@
 
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-
-import { ROUTER } from "@/constants";
+import { client } from "@/lib/thirdweb";
+import { ConnectButton } from "thirdweb/react";
 
 export default function Home() {
   return (
@@ -31,7 +31,7 @@ export default function Home() {
             Go to the app
           </h1>
           <div className="flex items-center">
-            {/* {} */}
+            <ConnectButton client={client} />
           </div>
         </div>
 
