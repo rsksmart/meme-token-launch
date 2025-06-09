@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import { CopyIcon } from "@/components/icons";
 import { formatAddress } from "@/lib/utils";
@@ -33,7 +33,7 @@ const ListTokens: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const accountAddress = useActiveAccount()?.address;
 
-  const fetchContracts = async () => {
+  const fetchContracts = useCallback(async () => {
     if (!accountAddress) return;
     
     setLoading(true);
@@ -55,7 +55,7 @@ const ListTokens: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [accountAddress]);
 
   useEffect(() => {
     if (accountAddress) {
@@ -64,7 +64,7 @@ const ListTokens: React.FC = () => {
       setContracts([]);
       setError(null);
     }
-  }, [accountAddress]);
+  }, [accountAddress, fetchContracts]);
 
   const copyToClipboard = async (text: string) => {
     try {
