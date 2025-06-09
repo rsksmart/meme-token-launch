@@ -263,14 +263,14 @@ const DeployToken: React.FC = () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 placeholder="Describe your meme token..."
-                rows={4}
+                rows={6}
                 className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500 resize-vertical"
               />
             </div>
           </div>
 
           {/* Right Column - Image Upload */}
-          <div className="space-y-4">
+          <div className="space-y-4 flex flex-col">
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">Token Logo *</h3>
               <Tooltip>
@@ -284,7 +284,7 @@ const DeployToken: React.FC = () => {
             </div>
 
             {/* Upload Area */}
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center h-full min-h-[400px] flex flex-col justify-center">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center flex-1 flex flex-col justify-center min-h-[240px]">
               {previewUrl ? (
                 <div className="space-y-4">
                   <div className="relative w-60 h-60 mx-auto rounded-lg overflow-hidden">
