@@ -6,8 +6,42 @@ updates:
     schedule:
       interval: daily
 
-  # Maintain dependencies for npm
+  # Root workspace dependencies
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: daily
+    groups:
+      development-dependencies:
+        dependency-type: development
+      production-dependencies:
+        dependency-type: production
+
+  # Client app dependencies
+  - package-ecosystem: npm
+    directory: "/apps/client "
+    schedule:
+      interval: daily
+    groups:
+      nextjs:
+        patterns:
+          - "next*"
+          - "@next/*"
+      react:
+        patterns:
+          - "react*"
+          - "@types/react*"
+
+  # API app dependencies  
+  - package-ecosystem: npm
+    directory: /apps/api
+    schedule:
+      interval: daily
+    groups:
+      hono:
+        patterns:
+          - "hono*"
+      thirdweb:
+        patterns:
+          - "thirdweb*"
+
