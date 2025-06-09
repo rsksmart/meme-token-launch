@@ -2,8 +2,7 @@
 
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import { client } from "@/lib/thirdweb";
-import { ConnectButton } from "thirdweb/react";
+
 
 export default function Home() {
 

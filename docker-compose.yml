@@ -7,12 +7,12 @@ services:
     container_name: launcher-api
     ports:
       - "4000:4000"
-    environment:
-      - NODE_ENV=development
+    env_file:
+      - ./apps/api/.env
     volumes:
       - ./apps/api:/app
       - /app/node_modules
-    restart: unless-stopped
+    restart: "on-failure:3"
 
   client:
     build:
@@ -21,13 +21,13 @@ services:
     container_name: launcher-client
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
+    env_file:
+      - "apps/client /.env"
     volumes:
       - type: bind
         source: "apps/client "
         target: /app
       - /app/node_modules
-    restart: unless-stopped
+    restart: "on-failure:3"
     depends_on:
       - api 
