@@ -6,78 +6,73 @@ import { client } from "@/lib/thirdweb";
 import { ConnectButton } from "thirdweb/react";
 
 export default function Home() {
+
   return (
-    <main className="h-full w-full flex flex-col">
+    <main className="min-h-screen w-full flex flex-col">
       <Navbar />
-      <section className="w-full px-6 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto mt-4">
-        <div className="w-full relative">
-          <h1 className="md:text-6xl xl:text-[78px] relative z-10 font-bold text-black flex flex-col gap-2.5">
-            <span className="max-w-max px-1.5 bg-white">Meme Token Launch</span>
-            <span className="flex gap-2">
-              <span className="bg-custom-green px-1.5 w-max xl:text-5xl">
+      
+      {/* Hero Section */}
+      <section className="flex-1 w-full px-6 xl:px-0 md:w-[1000px] xl:w-[1300px] m-auto">
+        <div className="w-full relative py-12 md:py-20">
+          <h1 className="text-4xl md:text-6xl xl:text-[78px] relative z-10 font-bold text-black flex flex-col gap-4 md:gap-6">
+            <span className="max-w-max px-2 bg-white">Meme Token Launch</span>
+            <span className="flex gap-3 flex-wrap">
+              <span className="bg-custom-green px-2 w-max text-3xl md:text-4xl xl:text-5xl">
                 Memes
               </span>
-              <span className="bg-title px-1.5 w-max xl:text-5xl">
+              <span className="bg-title px-2 w-max text-3xl md:text-4xl xl:text-5xl">
                 on Rootstock
               </span>
             </span>
           </h1>
         </div>
-        <div>
-        </div>
 
-        <div className="mt-24">
-          <h1 className="text-4xl text-white font-semibold mb-2">
-            Go to the app
-          </h1>
-          <div className="flex items-center">
-            <ConnectButton client={client} />
-          </div>
-        </div>
-
-        <div className="flex mt-20 gap-4">
-          <div className="flex-1 mt-4 border border-white rounded-3xl p-4">
-            <div className="flex gap-2">
-              <h3 className="bg-custom-lime w-max text-black text-3xl font-semibold px-2 py-1">
+        {/* Cards Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 py-12 md:py-16">
+          <div className="border border-white rounded-3xl p-6 md:p-8 flex flex-col">
+            <div className="flex gap-3 items-center mb-4">
+              <h3 className="bg-custom-lime text-black text-2xl md:text-3xl font-semibold px-3 py-2 rounded">
                 Meme
               </h3>
-              <span className="bg-custom-lime text-sm h-7 rounded-3xl w-7 flex justify-center items-center text-black font-semibold">
+              <span className="bg-custom-lime text-sm h-8 w-8 rounded-full flex justify-center items-center text-black font-semibold">
                 0.1
               </span>
             </div>
-            <div className="mt-3 text-justify">
-              Meme coins are designed like any other cryptocurrency, like Bitcoin or Ethereum. The difference is their existence tends to be centered around a viral moment or funny idea, and their value depends largely on how much momentum that concept can generate.
+            <div className="text-gray-200 leading-relaxed flex-1">
+            With the rise of meme coins, it&apos;s now easier than ever to launch your own meme token on Rootstock.
             </div>
           </div>
-          <div className="flex-1 mt-4 border border-white rounded-3xl p-4">
-            <div className="flex gap-2">
-              <h3 className="bg-custom-pink w-max text-black text-3xl font-semibold px-2 py-1">
+
+          <div className="border border-white rounded-3xl p-6 md:p-8 flex flex-col">
+            <div className="flex gap-3 items-center mb-4">
+              <h3 className="bg-custom-pink text-black text-2xl md:text-3xl font-semibold px-3 py-2 rounded">
                 Token Launcher
               </h3>
-              <span className="bg-custom-pink text-sm h-7 rounded-3xl w-7 flex justify-center items-center text-black font-semibold">
+              <span className="bg-custom-pink text-sm h-8 w-8 rounded-full flex justify-center items-center text-black font-semibold">
                 0.2
               </span>
             </div>
-            <div className="mt-3 text-justify">
-              Token Launcher helps you launch Ethereum ERC20 Tokens on EVM-compatible blockchains, automatically list your token on major defi exchanges with a real trading price, airdrop to millions of addresses and create farming programs to incentive liquidity.
+            <div className="text-gray-200 leading-relaxed flex-1">
+              Token Launcher helps you launch ERC20  and ERC721 Tokens on Rootstock.
             </div>
           </div>
-          <div className="flex-1 mt-4 border border-white rounded-3xl p-4">
-            <div className="flex gap-2">
-              <h3 className="bg-title pink w-max text-black text-3xl font-semibold px-2 py-1">
+
+          <div className="border border-white rounded-3xl p-6 md:p-8 flex flex-col">
+            <div className="flex gap-3 items-center mb-4">
+              <h3 className="bg-title text-black text-2xl md:text-3xl font-semibold px-3 py-2 rounded">
                 Project
               </h3>
-              <span className="bg-title text-sm h-7 rounded-3xl w-7 flex justify-center items-center text-black font-semibold">
+              <span className="bg-title text-sm h-8 w-8 rounded-full flex justify-center items-center text-black font-semibold">
                 0.3
               </span>
             </div>
-            <div className="mt-3 text-justify">
+            <div className="text-gray-200 leading-relaxed flex-1">
               The{' '}
               <a
                 href="https://github.com/rsksmart/meme-token-launch"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline font-semibold"
+                className="text-orange-500 hover:text-orange-400 underline font-semibold transition-colors"
               >
                 project
               </a>{' '}
@@ -88,6 +83,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <Footer />
     </main>
   );
