@@ -1,84 +1,111 @@
-# Turborepo starter
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/rsksmart/meme-token-launch/badge)](https://scorecard.dev/viewer/?uri=github.com/rsksmart/meme-token-launch)
+[![CodeQL](https://github.com/rsksmart/rskj/workflows/CodeQL/badge.svg)](https://github.com/rsksmart/meme-token-launch/actions?query=workflow%3ACodeQL)
+<img src="rootstock-logo.png" alt="RSK Logo" style="width:100%; height: auto;" />
 
-This Turborepo starter is maintained by the Turborepo core team.
+# *(Meme) Token Launch*
 
-## Using this example
+This project is an open-source proof of concept implementing a (Meme) Token Launch project. The primary goal is to allow users to mint ERC20 tokens as "Meme Tokens" on the Rootstock (RSK) network.
 
-Run the following command:
+## Table of Contents
 
-```sh
-npx create-turbo@latest
-```
+- [Overview](#overview)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Future Development](#future-development)
+- [Contributing](#contributing)
+- [Support](#support)
 
-## What's inside?
+## Overview
 
-This Turborepo includes the following packages/apps:
+## Technologies Used
 
-### Apps and Packages
+- **OpenZeppelin Standards**: [OpenZeppelin](https://www.openzeppelin.com/)
+- **Ethers.js**: [Ethers.js Documentation](https://docs.ethers.org/v5/)
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## Project Structure TODO
 
 ```
-cd my-turborepo
-pnpm build
+├── app
+│   ├── layout.tsx
+│   └── page.tsx
+├── components
+│   ├── connectedWallet
+│   ├── deployToken
+│   ├── footer
+│   ├── icons
+│   ├── navbar
+│   └── ui
+├── components
+├── constants
+│   └── index.ts
+├── context
+│   └── AuthContext.tsx
+├── contracts
+│   ├── abi
+│   └── MemeTokenFactory.sol
+├── hooks.json
+│   ├── useConnectWallet.tsx
+│   └── useDeployERC20Token.tsx
+├── utils
+└── package.json
 ```
 
-### Develop
+## Installation
 
-To develop all apps and packages, run the following command:
+To clone and run this project locally, follow these steps:
 
-```
-cd my-turborepo
-pnpm dev
-```
+1. **Clone the repository**:
 
-### Remote Caching
+   ```sh
+   git clone https://github.com/rsksmart/meme-token-launch.git
+   cd meme-token-launch
+   ```
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+2. **Install dependencies**:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+   ```sh
+   npm install
+   ```
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+3. **Configure environment variables**:
+   Create a `.env` file in the root directory and add necessary environment variables. Example:
 
-```
-cd my-turborepo
-npx turbo login
-```
+   ```sh
+   NEXT_PUBLIC_FACTORY_ADDRESS=0xdBd55bbE2A8f5cEb213Ef0f1ea27446b86f9E554
+   NEXT_PUBLIC_TOKEN_CREATED_EVENT=TokenCreated
+   NEXT_PUBLIC_EXPLORER_TX_BASE_URL=https://explorer.testnet.rootstock.io/tx/
+   NEXT_PUBLIC_EXPLORER_ADDRESS_BASE_URL=https://explorer.testnet.rootstock.io/address/
+   ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+4. **Run the development server**:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+   ```sh
+   npm run dev
+   ```
 
-```
-npx turbo link
-```
+## Usage
 
-## Useful Links
+1. **Access the application**: Open [http://localhost:3000](http://localhost:3000) in your browser.
+2. **Connect your wallet**: Click on "Go to the app" and connect your wallet.
+3. **Complete the form and create your meme token**: Complete the form with the configuration for your meme token and click on "Deploy". Wait until the process finishes, then copy and save your contract address.
 
-Learn more about the power of Turborepo:
+## Contributing
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+We welcome contributions from the community. Please fork the repository and submit pull requests with your changes. Ensure your code adheres to the project's main objective.
+
+## Support
+
+For any questions or support, please open an issue on the repository or reach out to the maintainers.
+
+
+# Disclaimer
+The software provided in this GitHub repository is offered “as is,” without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.
+- **Testing:** The software has not undergone testing of any kind, and its functionality, accuracy, reliability, and suitability for any purpose are not guaranteed.
+- **Use at Your Own Risk:** The user assumes all risks associated with the use of this software. The author(s) of this software shall not be held liable for any damages, including but not limited to direct, indirect, incidental, special, consequential, or punitive damages arising out of the use of or inability to use this software, even if advised of the possibility of such damages.
+- **No Liability:** The author(s) of this software are not liable for any loss or damage, including without limitation, any loss of profits, business interruption, loss of information or data, or other pecuniary loss arising out of the use of or inability to use this software.
+- **Sole Responsibility:** The user acknowledges that they are solely responsible for the outcome of the use of this software, including any decisions made or actions taken based on the software’s output or functionality.
+- **No Endorsement:** Mention of any specific product, service, or organization does not constitute or imply endorsement by the author(s) of this software.
+- **Modification and Distribution:** This software may be modified and distributed under the terms of the license provided with the software. By modifying or distributing this software, you agree to be bound by the terms of the license.
+- **Assumption of Risk:** By using this software, the user acknowledges and agrees that they have read, understood, and accepted the terms of this disclaimer and assumes all risks associated with the use of this software.
