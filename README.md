@@ -71,7 +71,7 @@ To clone and run this project locally, follow these steps:
 1. **Clone the repository**:
 
    ```sh
-   git clone https://github.com/rsksmart/meme-token-launch.git
+   git clone --recursive https://github.com/rsksmart/meme-token-launch.git
    cd meme-token-launch
    ```
 
