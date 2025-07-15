@@ -3,7 +3,7 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/rsksmart/meme-token-launch/badge)](https://scorecard.dev/viewer/?uri=github.com/rsksmart/meme-token-launch)
 [![CodeQL](https://github.com/rsksmart/rskj/workflows/CodeQL/badge.svg)](https://github.com/rsksmart/meme-token-launch/actions?query=workflow%3ACodeQL)
 
-<img src="rootstock-logo.png" alt="RSK Logo" style="width:100%; height: auto;" />
+<img src="rootstock-logo.png" alt="Rootstock Logo" style="width:100%; height: auto;" />
 
 This project is an open-source proof of concept implemnting a (Meme) Token Launch project on Rootstock using Thirdweb. The primary goal is to allow users to deploy their own ERC20 or ERC721 contracts on Rootstock testnet.
 
