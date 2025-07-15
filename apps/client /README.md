@@ -24,7 +24,7 @@ This project is an open-source proof of concept implementing a (Meme) Token Laun
 - **OpenZeppelin Standards**: [OpenZeppelin](https://www.openzeppelin.com/)
 - **Ethers.js**: [Ethers.js Documentation](https://docs.ethers.org/v5/)
 
-## Project Structure TODO
+## Project Structure
 
 ```
 ├── app
