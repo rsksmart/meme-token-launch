@@ -1,0 +1,33 @@
+services:
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+      target: development
+    container_name: launcher-api
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./apps/api/.env
+    volumes:
+      - ./apps/api:/app
+      - /app/node_modules
+    restart: "on-failure:3"
+
+  client:
+    build:
+      context: "apps/client "
+      dockerfile: Dockerfile
+    container_name: launcher-client
+    ports:
+      - "3000:3000"
+    env_file:
+      - "apps/client /.env"
+    volumes:
+      - type: bind
+        source: "apps/client "
+        target: /app
+      - /app/node_modules
+    restart: "on-failure:3"
+    depends_on:
+      - api 
