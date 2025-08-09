@@ -152,29 +152,29 @@ const DeployToken: React.FC = () => {
   return (
     <Card className="w-full max-w-5xl mx-auto shadow-lg">
       <CardHeader className="space-y-4 pb-6">
-        <CardTitle className="flex justify-between items-center text-2xl">
+        <CardTitle className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 text-xl sm:text-2xl">
           <div className="font-bold">Deploy Token</div>
           <div
-            className="cursor-pointer flex items-center gap-1 text-orange-500 text-lg hover:opacity-80"
+            className="cursor-pointer flex items-center gap-1 text-orange-500 text-base sm:text-lg hover:opacity-80"
             onClick={() => router.push(ROUTER.MY_TOKENS)}
           >
             <ArrowLeftIcon className="w-4 h-4" />
             Go back to my tokens
           </div>
         </CardTitle>
-        <CardDescription className="text-lg">
+        <CardDescription className="text-base sm:text-lg">
           Deploy your meme token on Rootstock!
         </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Left Column - Form Fields */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Token Type Selector */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <label htmlFor="tokenType" className="block font-medium">Token Type *</label>
+                <label htmlFor="tokenType" className="block font-medium text-sm sm:text-base">Token Type *</label>
                 <Tooltip>
                   <TooltipTrigger>
                     <HelpCircleIcon className="w-4 h-4 text-gray-400 hover:text-gray-600" />
@@ -189,7 +189,7 @@ const DeployToken: React.FC = () => {
                 id="tokenType"
                 value={formData.tokenType}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               >
                 <option value="ERC20">ERC20 - Fungible Token</option>
                 <option value="ERC721">ERC721 - NFT</option>
@@ -199,7 +199,7 @@ const DeployToken: React.FC = () => {
             {/* Token Name */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <label htmlFor="name" className="block font-medium">Name *</label>
+                <label htmlFor="name" className="block font-medium text-sm sm:text-base">Name *</label>
                 <Tooltip>
                   <TooltipTrigger>
                     <HelpCircleIcon className="w-4 h-4 text-gray-400 hover:text-gray-600" />
@@ -216,14 +216,14 @@ const DeployToken: React.FC = () => {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Enter token name"
-                className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
             </div>
 
             {/* Token Symbol */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <label htmlFor="symbol" className="block font-medium">Symbol *</label>
+                <label htmlFor="symbol" className="block font-medium text-sm sm:text-base">Symbol *</label>
                 <Tooltip>
                   <TooltipTrigger>
                     <HelpCircleIcon className="w-4 h-4 text-gray-400 hover:text-gray-600" />
@@ -240,14 +240,14 @@ const DeployToken: React.FC = () => {
                 value={formData.symbol}
                 onChange={handleInputChange}
                 placeholder="Enter token symbol"
-                className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
               />
             </div>
 
             {/* Description */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <label htmlFor="description" className="block font-medium">Description</label>
+                <label htmlFor="description" className="block font-medium text-sm sm:text-base">Description</label>
                 <Tooltip>
                   <TooltipTrigger>
                     <HelpCircleIcon className="w-4 h-4 text-gray-400 hover:text-gray-600" />
@@ -263,8 +263,8 @@ const DeployToken: React.FC = () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 placeholder="Describe your meme token..."
-                rows={6}
-                className="w-full px-4 py-3 border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500 resize-vertical"
+                rows={4}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-[hsl(var(--border))] rounded-lg bg-[hsl(var(--card))] focus:border-orange-500 focus:ring-1 focus:ring-orange-500 resize-vertical sm:rows-6"
               />
             </div>
           </div>
@@ -272,7 +272,7 @@ const DeployToken: React.FC = () => {
           {/* Right Column - Image Upload */}
           <div className="space-y-4 flex flex-col">
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold">Token Logo *</h3>
+              <h3 className="text-base sm:text-lg font-semibold">Token Logo *</h3>
               <Tooltip>
                 <TooltipTrigger>
                   <HelpCircleIcon className="w-4 h-4 text-gray-400 hover:text-gray-600" />
@@ -284,16 +284,15 @@ const DeployToken: React.FC = () => {
             </div>
 
             {/* Upload Area */}
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center flex-1 flex flex-col justify-center min-h-[240px]">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-6 text-center flex-1 flex flex-col justify-center min-h-[200px] sm:min-h-[240px]">
               {previewUrl ? (
                 <div className="space-y-4">
-                  <div className="relative w-60 h-60 mx-auto rounded-lg overflow-hidden">
+                  <div className="relative w-40 h-40 sm:w-60 sm:h-60 mx-auto rounded-lg overflow-hidden">
                     <Image
                       src={previewUrl}
                       alt="Selected token logo"
                       fill
                       className="object-cover"
-                
                     />
                     {uploadedImageUri && (
                       <div className="absolute top-1 right-1 bg-green-500 text-white text-xs px-1 py-0.5 rounded">
@@ -301,15 +300,15 @@ const DeployToken: React.FC = () => {
                       </div>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600">{selectedFile?.name}</p>
+                  <p className="text-xs sm:text-sm text-gray-600 break-all">{selectedFile?.name}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
-                  <InfoCircleIcon className="w-16 h-16 text-gray-400 mx-auto" />
-                  <div>
+                  <InfoCircleIcon className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 mx-auto" />
+                  <div className="text-sm sm:text-base">
                     <span className="font-medium">Click to upload</span> or drag and drop
                   </div>
-                  <div className="text-sm text-gray-500">PNG, JPG up to 10MB</div>
+                  <div className="text-xs sm:text-sm text-gray-500">PNG, JPG up to 10MB</div>
                 </div>
               )}
 
@@ -322,17 +321,17 @@ const DeployToken: React.FC = () => {
                 onChange={handleFileSelect}
               />
               
-              <div className="flex gap-3 mt-6 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6 justify-center">
                 <label
                   htmlFor="image"
-                  className="px-6 py-2 bg-gray-600 text-white rounded-lg cursor-pointer hover:bg-gray-700 transition-colors min-w-[140px] text-center"
+                  className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gray-600 text-white rounded-lg cursor-pointer hover:bg-gray-700 transition-colors min-w-[120px] sm:min-w-[140px] text-center"
                 >
                   {previewUrl ? 'Change Image' : 'Select File'}
                 </label>
                 <Button
                   onClick={handleUploadTest}
                   disabled={!selectedFile}
-                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 min-w-[140px]"
+                  className="px-4 sm:px-6 py-2 text-sm sm:text-base bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 min-w-[120px] sm:min-w-[140px]"
                 >
                   {uploading ? 'Uploading...' : 'Upload'}
                 </Button>
@@ -346,7 +345,7 @@ const DeployToken: React.FC = () => {
         <Button
           onClick={handleDeploy}
           disabled={!isDeployEnabled || deploying}
-          className="w-full py-3 my-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 font-semibold"
+          className="w-full py-3 my-2 text-sm sm:text-base bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 font-semibold"
         >
           {deploying ? (
             <span className="flex items-center justify-center gap-2">
@@ -367,4 +366,3 @@ const DeployToken: React.FC = () => {
 };
 
 export default DeployToken;
-
